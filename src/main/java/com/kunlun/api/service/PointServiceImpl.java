@@ -28,8 +28,9 @@ public class PointServiceImpl implements PointService {
     public String checkPoint(Integer pointValue, String openid) {
         Point point = pointMapper.findByOpenid(openid);
         if (null == point) {
-            return "没有可使用的积分";
-
+            if (pointValue > 0) {
+                return "没有可使用的积分";
+            }
         } else if (pointValue > point.getPoint()) {
             return "积分不足";
         }
