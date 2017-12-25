@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kunlun.api.mapper.PointMapper">
+    <!--微信根据open_id查询积分信息-->
+    <select id="findByOpenid" resultType="com.kunlun.entity.Point">
+        SELECT * FROM t_point WHERE user_id = #{openid}
+    </select>
+</mapper>
