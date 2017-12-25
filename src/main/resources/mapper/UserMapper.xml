@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kunlun.api.mapper.UserMapper">
+
+    <!--根据手机号登录-->
+    <select id="login" resultType="com.kunlun.entity.User">
+        SELECT id,name,
+        head_picture,
+        nick_name,
+        sex,
+        age,
+        certificate_id,
+        mobile,
+        address,
+        city,
+        email,
+        born_date,
+        certification,
+        status,
+        create_date,
+        update_date,
+        last_login_date,
+        id_photo_front_url,
+        id_photo_bg_url,
+        user_type,
+        login_ip
+        FROM t_user
+        WHERE status='NORMAL' AND mobile=#{mobile} AND password=#{password}
+    </select>
+
+
+    <!--根据手机号查询用户-->
+    <select id="validByMobile" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM t_user WHERE status='NORMAL' AND mobile=#{mobile}
+    </select>
+
+    <!--校验昵称是否存在-->
+    <select id="validByNickName" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM t_user WHERE nick_name=#{nickName}
+    </select>
+
+    <!--根据id查详情-->
+    <select id="findById" resultType="com.kunlun.entity.User">
+        SELECT
+        id,
+        name,
+        head_picture,
+        nick_name,
+        sex,
+        age,
+        certificate_id,
+        mobile,
+        address,
+        email,
+        certification,
+        born_date,
+        status,
+        city,
+        create_date,
+        update_date,
+        last_login_date,
+        login_ip,
+        password,
+        user_type,
+        id_photo_front_url,
+        id_photo_bg_url
+        FROM t_user
+        WHERE id=#{id}
+    </select>
+
+    <!--更新用户登录ip-->
+    <update id="updateLoginIpAddress">
+        UPDATE  t_user
+        SET login_ip=#{ip},
+        update_date=NOW(),
+        last_login_date=NOW()
+        WHERE  id=#{id}
+    </update>
+
+
+    <!--用户列表-->
+    <select id="findByCondition" resultType="com.kunlun.entity.User">
+        SELECT
+        tuser.id,
+        tuser.name,
+        tuser.head_picture,
+        tuser.nick_name,
+        tuser.mobile,
+        tuser.status,
+        tuser.last_login_date,
+        tuser.user_type,
+        troleuser.role_id as roleId
+        FROM t_user tuser
+        LEFT JOIN t_sys_user_role troleuser ON troleuser.user_id=tuser.id
+        WHERE 1=1
+        <if test="userType!=null">AND user_type=#{userType}</if>
+        <if test="certification!=null and  certification!=''">AND certification=#{certification}</if>
+        <if test="searchKey!=null and searchKey!=''">
+            AND CONCAT_WS('',tuser.name,tuser.nick_name,tuser.mobile)LIKE #{searchKey}
+        </if>
+        <if test="startDate!=null and endDate!=null">
+            AND tuser.create_date BETWEEN #{startDate} AND #{endDate}
+        </if>
+        <if test="startDate!=null and endDate==null">
+            AND tuser.create_date BETWEEN #{startDate} AND NOW()
+        </if>
+        <if test="endDate!=null and startDate==null">
+            AND tuser.create_date BETWEEN '1970-01-01' AND #{endDate}
+        </if>
+    </select>
+
+
+    <!--管理员账号校验-->
+    <select id="validAdmin" resultType="java.lang.Integer">
+        SELECT  COUNT(*) FROM  t_user  WHERE id=#{userId} AND user_type='USER_ADMIN'
+    </select>
+
+
+    <!--商户实名认证信息审核-->
+    <update id="auditSeller">
+        UPDATE t_user SET
+        certification=#{certification},
+        <if test="reason!=null and reason!=''">reason=#{reason},</if>
+        update_date=NOW()
+        WHERE id=#{sellerId}
+    </update>
+
+    <!--商户注册-->
+    <insert id="register" parameterType="com.kunlun.entity.User">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        INSERT INTO t_user(
+        name,
+        mobile,
+        born_date,
+        sex,
+        age,
+        email,
+        address,
+        password,
+        head_picture,
+        nick_name,
+        certification,
+        certificate_id,
+        city,
+        status,
+        create_date,
+        user_type,
+        id_photo_front_url,
+        id_photo_bg_url)
+        VALUES (
+        #{name},
+        #{mobile},
+        #{bornDate},
+        #{sex},
+        #{age},
+        #{email},
+        #{address},
+        #{password},
+        #{headPic},
+        #{nickName},
+        #{certification},
+        #{certificateId},
+        #{city},
+        'NORMAL',
+        NOW(),
+        'SELLER',
+        #{idPhotoFrontUrl},
+        #{idPhotoBgUrl}
+        )
+    </insert>
+
+
+    <!--修改商户个人信息-->
+    <update id="updateSellerInfo" parameterType="com.kunlun.entity.User">
+        UPDATE t_user SET
+        <if test="headPic!=null and headPic!=''">head_picture=#{headPic},</if>
+        <if test="nickName!=null and nickName!=''">nick_name=#{nickName},</if>
+        <if test="city!=null and city!=''">city=#{city},</if>
+        <if test="mobile!=null and mobile!=''">mobile=#{mobile},</if>
+        <if test="email!=null and email!=''">email=#{email},</if>
+        <if test="address!=null and address!=''">address=#{address},</if>
+        update_date=now()
+        WHERE id=#{id}
+    </update>
+
+    <!--修改商户需要审核的信息-->
+    <update id="updateSellerAuthInfo" parameterType="com.kunlun.entity.User">
+        UPDATE t_user SET
+        <if test="name!=null and name!=''">name=#{name},</if>
+        <if test="headPic!=null and headPic!=''">head_picture=#{headPic},</if>
+        <if test="nickName!=null and nickName!=''">nick_name=#{nickName},</if>
+        <if test="sex!=null and sex!=''">sex=#{sex},</if>
+        <if test="age!=null and age!=''">age=#{age},</if>
+        <if test="certificateId!=null and certificateId!=''">certificate_id=#{certificateId},</if>
+        <if test="mobile!=null and mobile!=''">mobile=#{mobile},</if>
+        <if test="address!=null and address!=''">address=#{address},</if>
+        <if test="city!=null and city!=''">city=#{city},</if>
+        <if test="email!=null and email!=''">email=#{email},</if>
+        <if test="bornDate!=null">born_date=#{bornDate},</if>
+        <if test="lastLoginDate!=null">last_login_date=#{lastLoginDate},</if>
+        <if test="loginIp!=null and loginIp!=''">login_ip=#{loginIp},</if>
+        <if test="idPhotoFrontUrl!=null and idPhotoFrontUrl!=''">id_photo_front_url=#{idPhotoFrontUrl},</if>
+        <if test="idPhotoBgUrl!=null and idPhotoBgUrl!=''">id_photo_bg_url=#{idPhotoBgUrl},</if>
+        certification='NOT_AUTH',
+        update_date=NOW()
+        WHERE id=#{id}
+    </update>
+
+
+    <update id="updateAdminInfo" parameterType="com.kunlun.entity.User">
+        UPDATE t_user SET
+        <if test="name!=null and name!=''">name=#{name},</if>
+        <if test="headPic!=null and headPic!=''">head_picture=#{headPic},</if>
+        <if test="nickName!=null and nickName!=''">nick_name=#{nickName},</if>
+        <if test="sex!=null and sex!=''">sex=#{sex},</if>
+        <if test="age!=null and age!=''">age=#{age},</if>
+        <if test="certificateId!=null and certificateId!=''">certificate_id=#{certificateId},</if>
+        <if test="mobile!=null and mobile!=''">mobile=#{mobile},</if>
+        <if test="address!=null and address!=''">address=#{address},</if>
+        <if test="city!=null and city!=''">city=#{city},</if>
+        <if test="email!=null and email!=''">email=#{email},</if>
+        <if test="bornDate!=null">born_date=#{bornDate},</if>
+        <if test="certification!=null and certification!=''">certification=#{certification},</if>
+        <if test="status!=null and status!=''">status=#{status},</if>
+        <if test="lastLoginDate!=null">last_login_date=#{lastLoginDate},</if>
+        <if test="userType!=null and userType!=''">user_type=#{userType},</if>
+        update_date=NOW()
+        WHERE id=#{id}
+    </update>
+
+
+    <update id="updatePassword">
+        UPDATE t_user
+        SET password=#{password},
+            update_date=NOW()
+        WHERE id=#{userId}
+    </update>
+</mapper>
