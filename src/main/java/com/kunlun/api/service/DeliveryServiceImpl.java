@@ -7,6 +7,8 @@ import com.mysql.jdbc.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author by hws
  * @created on 2017/12/25.
@@ -24,7 +26,7 @@ public class DeliveryServiceImpl implements DeliveryService{
      * @return
      */
     @Override
-    public DataRet findDetailById(Long id) {
+    public DataRet<Delivery> findDetailById(Long id) {
 
         Delivery delivery = deliveryMapper.findDetailById(id);
         if(delivery==null){
