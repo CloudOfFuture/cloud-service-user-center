@@ -24,7 +24,7 @@ public class DeliveryController {
      * @return
      */
     @GetMapping("findDetailById")
-    private DataRet findDetailById(@RequestParam(value = "id") Long id){
+    public DataRet findDetailById(@RequestParam(value = "id") Long id){
         return deliveryService.findDetailById(id);
     }
 
@@ -34,5 +34,5 @@ public class DeliveryController {
      * @return
      */
     @GetMapping("check")
-    private String check(@RequestParam(value = "id") Long id){return deliveryService.check(id);}
+    public String check(@RequestParam(value = "id") Long id){return deliveryService.check(id);}
 }
