@@ -15,7 +15,7 @@ public interface DeliveryService {
      * @param id
      * @return
      */
-    DataRet findDetailById(Long id);
+    DataRet<Delivery> findDetailById(Long id);
 
     /**
      * 根据id校验收获地址有效性

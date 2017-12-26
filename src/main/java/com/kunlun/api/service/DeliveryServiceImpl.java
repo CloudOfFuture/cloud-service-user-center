@@ -24,7 +24,7 @@ public class DeliveryServiceImpl implements DeliveryService{
      * @return
      */
     @Override
-    public DataRet findDetailById(Long id) {
+    public DataRet<Delivery> findDetailById(Long id) {
 
         Delivery delivery = deliveryMapper.findDetailById(id);
         if(delivery==null){
