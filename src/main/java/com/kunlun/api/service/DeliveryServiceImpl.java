@@ -25,10 +25,7 @@ public class DeliveryServiceImpl implements DeliveryService{
      */
     @Override
     public DataRet findDetailById(Long id) {
-        //检测传入的id值是否有误
-        if(StringUtils.isNullOrEmpty(id.toString())){
-            return new DataRet("Error","收货地址id有误");
-        }
+
         Delivery delivery = deliveryMapper.findDetailById(id);
         if(delivery==null){
             return new DataRet("Error","查无此收货信息");
