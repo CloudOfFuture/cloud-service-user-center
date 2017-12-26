@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @created on 2017/12/25.
  */
 @RestController
-@RequestMapping("delivery")
+    @RequestMapping("delivery")
 public class DeliveryController {
     @Autowired
     private DeliveryService deliveryService;
@@ -27,4 +27,12 @@ public class DeliveryController {
     private DataRet findDetailById(@RequestParam(value = "id") Long id){
         return deliveryService.findDetailById(id);
     }
+
+    /**
+     * 根据id校验收获地址有效性
+     * @param id
+     * @return
+     */
+    @GetMapping("check")
+    private String check(@RequestParam(value = "id") Long id){return deliveryService.check(id);}
 }

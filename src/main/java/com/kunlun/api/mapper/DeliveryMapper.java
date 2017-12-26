@@ -17,4 +17,5 @@ public interface DeliveryMapper {
      * @return
      */
     Delivery findDetailById(@RequestParam("id") Long id);
+
 }
