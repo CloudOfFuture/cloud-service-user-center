@@ -34,6 +34,6 @@ public class DeliveryController {
      * @param id
      * @return
      */
-    @GetMapping("check")
-    public String check(@RequestParam(value = "id") Long id){return deliveryService.check(id);}
+    @GetMapping("checkDelivery")
+    public DataRet<Delivery> check(@RequestParam(value = "id") Long id){return deliveryService.check(id);}
 }
