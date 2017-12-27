@@ -25,11 +25,10 @@ public interface UserService {
     /**
      * 管理后台注册
      *
-     * @param ip   注册的IP地址
      * @param user User
      * @return DataRet
      */
-    DataRet register(User user, String ip) throws Exception;
+    DataRet register(User user) throws Exception;
 
     /**
      * 修改个人资料
