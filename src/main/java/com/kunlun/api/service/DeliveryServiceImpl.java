@@ -36,17 +36,17 @@ public class DeliveryServiceImpl implements DeliveryService{
     }
 
     /**
-     * 根据id校验收获地址有效性
+     * 根据id校验收货地址有效性
      *
      * @param id
      * @return
      */
     @Override
-    public String check(Long id) {
+    public DataRet<Delivery> check(Long id) {
         Delivery delivery = deliveryMapper.findDetailById(id);
         if(delivery==null){
-            return "非法地址";
+            return new DataRet<>("ERROR","查无此收货地址");
         }
-        return "正常";
+        return new DataRet<>(delivery);
     }
 }

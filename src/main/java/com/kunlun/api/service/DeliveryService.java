@@ -22,5 +22,5 @@ public interface DeliveryService {
      * @param id
      * @return
      */
-    String check(Long id);
+    DataRet<Delivery> check(Long id);
 }
