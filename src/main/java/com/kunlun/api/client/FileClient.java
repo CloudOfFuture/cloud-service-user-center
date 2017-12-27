@@ -6,6 +6,7 @@ import com.kunlun.result.DataRet;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -22,7 +23,7 @@ public interface FileClient {
      * @return DataRet
      */
     @PostMapping("/file/add")
-    DataRet add(MallImg mallImg);
+    DataRet add(@RequestBody MallImg mallImg);
 
     /**
      * 图片删除
