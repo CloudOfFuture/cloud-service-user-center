@@ -161,7 +161,7 @@
         #{email},
         #{address},
         #{password},
-        #{headPic},
+        #{headPicture},
         #{nickName},
         #{certification},
         #{certificateId},
@@ -178,7 +178,7 @@
     <!--修改商户个人信息-->
     <update id="updateSellerInfo" parameterType="com.kunlun.entity.User">
         UPDATE t_user SET
-        <if test="headPic!=null and headPic!=''">head_picture=#{headPic},</if>
+        <if test="headPicture!=null and headPicture!=''">head_picture=#{headPicture},</if>
         <if test="nickName!=null and nickName!=''">nick_name=#{nickName},</if>
         <if test="city!=null and city!=''">city=#{city},</if>
         <if test="mobile!=null and mobile!=''">mobile=#{mobile},</if>
@@ -192,7 +192,7 @@
     <update id="updateSellerAuthInfo" parameterType="com.kunlun.entity.User">
         UPDATE t_user SET
         <if test="name!=null and name!=''">name=#{name},</if>
-        <if test="headPic!=null and headPic!=''">head_picture=#{headPic},</if>
+        <if test="headPicture!=null and headPicture!=''">head_picture=#{headPicture},</if>
         <if test="nickName!=null and nickName!=''">nick_name=#{nickName},</if>
         <if test="sex!=null and sex!=''">sex=#{sex},</if>
         <if test="age!=null and age!=''">age=#{age},</if>
@@ -215,7 +215,7 @@
     <update id="updateAdminInfo" parameterType="com.kunlun.entity.User">
         UPDATE t_user SET
         <if test="name!=null and name!=''">name=#{name},</if>
-        <if test="headPic!=null and headPic!=''">head_picture=#{headPic},</if>
+        <if test="headPicture!=null and headPicture!=''">head_picture=#{headPicture},</if>
         <if test="nickName!=null and nickName!=''">nick_name=#{nickName},</if>
         <if test="sex!=null and sex!=''">sex=#{sex},</if>
         <if test="age!=null and age!=''">age=#{age},</if>

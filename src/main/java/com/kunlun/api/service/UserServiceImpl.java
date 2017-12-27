@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
         password = EncryptUtil.encryptMD5(password);
         int result = userMapper.updatePassword(userId, password);
         if (result > 0) {
-            return new DataRet<>("密码修改失成功");
+            return new DataRet<>("密码修改成功");
         }
         return new DataRet("update_error", "密码修改失败");
     }
