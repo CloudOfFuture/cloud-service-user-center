@@ -1,11 +1,14 @@
 package com.kunlun.api.controller;
 
 import com.kunlun.api.service.PointService;
+import com.kunlun.result.DataRet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.logging.Logger;
 
 /**
  * @author by kunlun
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class PintController {
 
 
+    private Logger LOGGER = Logger.getLogger("日志");
+
     @Autowired
     private PointService pointService;
 
@@ -27,9 +32,10 @@ public class PintController {
      * @param openid     openid
      * @return
      */
-    @GetMapping("checkPoint")
-    public String checkPoint(@RequestParam(value = "pointValue") Integer pointValue,
-                             @RequestParam(value = "openid") String openid) {
+    @GetMapping("/checkPoint")
+    public DataRet<String> checkPoint(@RequestParam(value = "pointValue") Integer pointValue,
+                              @RequestParam(value = "openid") String openid) {
+        LOGGER.info("积分检查");
         return pointService.checkPoint(pointValue, openid);
     }
 }

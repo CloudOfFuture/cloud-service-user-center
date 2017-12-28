@@ -2,6 +2,7 @@ package com.kunlun.api.service;
 
 import com.kunlun.api.mapper.PointMapper;
 import com.kunlun.entity.Point;
+import com.kunlun.result.DataRet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +26,16 @@ public class PointServiceImpl implements PointService {
      * @return
      */
     @Override
-    public String checkPoint(Integer pointValue, String openid) {
+    public DataRet<String> checkPoint(Integer pointValue, String openid) {
         Point point = pointMapper.findByOpenid(openid);
         if (null == point) {
             if (pointValue > 0) {
-                return "没有可使用的积分";
+                return new DataRet<>("Error","没有可使用的积分");
             }
         } else if (pointValue > point.getPoint()) {
-            return "积分不足";
+            return new DataRet<>("Error","积分不足");
         }
-        return null;
+        return new DataRet<>("正常");
     }
 
 

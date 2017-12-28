@@ -1,5 +1,7 @@
 package com.kunlun.api.service;
 
+import com.kunlun.result.DataRet;
+
 /**
  * @author by kunlun
  * @version <0.1>
@@ -14,5 +16,5 @@ public interface PointService {
      * @param openid     openid
      * @return
      */
-    String checkPoint(Integer pointValue, String openid);
+    DataRet<String> checkPoint(Integer pointValue, String openid);
 }
