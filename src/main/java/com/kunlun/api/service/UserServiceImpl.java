@@ -274,6 +274,8 @@ public class UserServiceImpl implements UserService {
             mallImage.setType(CommonEnum.TYPE_IMG_ID_PHOTO.getCode());
             fileClient.add(mallImage);
         }
+        DataRet mal = fileClient.findByUrl("/mall/goodimage/richtext/1514312604857.jpg");
+        System.out.println(mal.toString());
     }
 
     /**
