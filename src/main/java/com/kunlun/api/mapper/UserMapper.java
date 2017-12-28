@@ -135,5 +135,5 @@ public interface UserMapper {
      * @return int
      */
     int updatePassword(@Param("userId") Long userId,
-                       @Param("userId") String password);
+                       @Param("password") String password);
 }

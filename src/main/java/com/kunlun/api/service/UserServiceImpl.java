@@ -4,8 +4,10 @@ import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.util.StringUtil;
+import com.kunlun.api.client.FileClient;
 import com.kunlun.api.mapper.UserMapper;
 import com.kunlun.entity.MallImage;
+import com.kunlun.entity.MallImg;
 import com.kunlun.entity.SysRole;
 import com.kunlun.entity.User;
 import com.kunlun.enums.CommonEnum;
@@ -33,10 +35,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    FileClient fileClient;
 
     @Override
     public DataRet login(String mobile, String password, String ip) throws Exception {
-
         if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password)) {
             return new DataRet("param_error", "参数错误");
         }
@@ -62,7 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public DataRet register(User user, String ip) throws Exception {
+    public DataRet register(User user) throws Exception {
         if (user == null || StringUtils.isEmpty(user.getMobile())) {
             return new DataRet("param_error", "参数有误");
         }
@@ -120,9 +123,10 @@ public class UserServiceImpl implements UserService {
         User localUser = userMapper.findById(user.getId());
         int result;
         if (CommonEnum.SELLER.getCode().equals(localUser.getUserType())) {
-            //商家，只能修改部分信息
+            //商家只能修改部分信息
             result = userMapper.updateSellerInfo(user);
         } else {
+            //管理员可以修改所有信息
             result = userMapper.updateAdminInfo(user);
         }
         if (result > 0) {
@@ -146,8 +150,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public DataRet logout(String mobile) {
-        //TODO:
-        return new DataRet<>("退出成功");
+        return new DataRet<>("退出登录成功");
     }
 
     /**
@@ -155,8 +158,8 @@ public class UserServiceImpl implements UserService {
      *
      * @param userId   Long
      * @param password password
-     * @return
-     * @throws Exception
+     * @return DataRet
+     * @throws Exception e
      */
     @Override
     public DataRet updatePassword(Long userId, String password) throws Exception {
@@ -166,7 +169,7 @@ public class UserServiceImpl implements UserService {
         password = EncryptUtil.encryptMD5(password);
         int result = userMapper.updatePassword(userId, password);
         if (result > 0) {
-            return new DataRet<>("密码修改失成功");
+            return new DataRet<>("密码修改成功");
         }
         return new DataRet("update_error", "密码修改失败");
     }
@@ -246,7 +249,6 @@ public class UserServiceImpl implements UserService {
         if (result > 0) {
             return new DataRet<>("审核成功");
         }
-
         return new DataRet("audit_error", " 审核失败");
     }
 
@@ -258,18 +260,19 @@ public class UserServiceImpl implements UserService {
      * @param bgImgUrl    String
      */
     private void saveIdPhotoImage(Long userId, String frontImgUrl, String bgImgUrl) {
-//            TODO:存储照片,先查询userId有无记录再添加
         if (!StringUtils.isEmpty(frontImgUrl)) {
-            MallImage mallImage = new MallImage();
-            mallImage.setIdPhotoOwnerId(userId);
+            MallImg mallImage = new MallImg();
+            mallImage.setTargetId(userId);
             mallImage.setUrl(frontImgUrl);
-            // fileOperationMapper.add(mallImage);
+            mallImage.setType(CommonEnum.TYPE_IMG_ID_PHOTO.getCode());
+            fileClient.add(mallImage);
         }
         if (!StringUtils.isEmpty(bgImgUrl)) {
-            MallImage mallImage = new MallImage();
+            MallImg mallImage = new MallImg();
             mallImage.setUrl(bgImgUrl);
-            mallImage.setIdPhotoOwnerId(userId);
-            // fileOperationMapper.add(mallImage);
+            mallImage.setTargetId(userId);
+            mallImage.setType(CommonEnum.TYPE_IMG_ID_PHOTO.getCode());
+            fileClient.add(mallImage);
         }
     }
 

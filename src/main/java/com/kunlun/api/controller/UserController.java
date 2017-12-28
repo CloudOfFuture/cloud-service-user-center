@@ -29,29 +29,25 @@ public class UserController {
      *
      * @param mobile   手机号
      * @param password 密码
-     * @param request  请求
+     * @param ip       请求ip
      * @return DataRet
      */
     @PostMapping(value = "/login")
     public DataRet login(@RequestParam(value = "mobile") String mobile,
                          @RequestParam(value = "password") String password,
-                         HttpServletRequest request) throws Exception {
-        String ip = IpUtil.getIPAddress(request);
+                         @RequestParam(value = "ip") String ip) throws Exception {
         return userService.login(mobile, password, ip);
     }
 
     /**
      * 商户注册
      *
-     * @param user               User
-     * @param httpServletRequest HttpServletRequest
+     * @param user User
      * @return DataRet
      */
     @PostMapping("/register")
-    public DataRet registry(@RequestBody User user,
-                            HttpServletRequest httpServletRequest) throws Exception {
-        String ip = IpUtil.getIPAddress(httpServletRequest);
-        return userService.register(user, ip);
+    public DataRet registry(@RequestBody User user) throws Exception {
+        return userService.register(user);
     }
 
     /**
@@ -84,7 +80,7 @@ public class UserController {
      * @param userId   Long
      * @return BaseResult
      */
-    @GetMapping(value = "/updatePassword")
+    @PostMapping(value = "/updatePassword")
     public DataRet updatePassword(@RequestParam(value = "userId") Long userId,
                                   @RequestParam(value = "password") String password) throws Exception {
         return userService.updatePassword(userId, password);
@@ -97,7 +93,7 @@ public class UserController {
      * @param mobile 手机号
      * @return BaseResult
      */
-    @GetMapping(value = "/logout")
+    @PostMapping(value = "/logout")
     public DataRet logout(@RequestParam(value = "mobile") String mobile) {
         return userService.logout(mobile);
     }
@@ -115,7 +111,7 @@ public class UserController {
      * @param certification 认证
      * @return List
      */
-    @GetMapping(value = "/userList")
+    @GetMapping(value = "/findByCondition")
     public PageResult findByCondition(@RequestParam(value = "pageNo") Integer pageNo,
                                       @RequestParam(value = "pageSize") Integer pageSize,
                                       @RequestParam(value = "startDate", required = false) String startDate,
