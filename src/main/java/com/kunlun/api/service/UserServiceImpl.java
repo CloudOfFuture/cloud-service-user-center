@@ -253,6 +253,21 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 校验账号是否是管理员账号
+     *
+     * @param userId Long
+     * @return DataRet
+     */
+    @Override
+    public DataRet validAdmin(Long userId) {
+        int result = userMapper.validAdmin(userId);
+        if (result > 0) {
+            return new DataRet<>(result);
+        }
+        return new DataRet<>("error", "非管理员账号");
+    }
+
+    /**
      * 存储证件照片
      *
      * @param userId      Long

@@ -106,4 +106,11 @@ public interface UserService {
      * @return DataRet
      */
     DataRet auditSeller(Long sellerId, Long operateId, String certification, String reason);
+
+    /**
+     * 校验账号是否是管理员账号
+     * @param userId Long
+     * @return  DataRet
+     */
+    DataRet validAdmin(Long userId);
 }

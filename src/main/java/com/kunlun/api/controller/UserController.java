@@ -154,4 +154,17 @@ public class UserController {
                                @RequestParam(value = "reason", required = false) String reason) {
         return userService.auditSeller(sellerId, operateId, certification, reason);
     }
+
+
+    /**
+     * 校验账号是否是管理员账号
+     *
+     * @param userId Long
+     * @return DataRet
+     */
+    @GetMapping(value = "/validAdmin")
+    public DataRet validAdmin(@RequestParam(value = "userId") Long userId) {
+        return userService.validAdmin(userId);
+    }
+
 }
