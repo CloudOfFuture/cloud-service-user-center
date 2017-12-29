@@ -38,5 +38,36 @@ public class PointServiceImpl implements PointService {
         return new DataRet<>("正常");
     }
 
+    /**
+     * 操作用户积分
+     *
+     * @param point
+     * @param userId
+     * @return
+     */
+    @Override
+    public DataRet<String> updatePoint(Integer point, String userId) {
+        Integer result = pointMapper.updatePoint(userId,point);
+        if(result<=0){
+            return new DataRet<>("ERROR","修改用户积分失败");
+        }
+        return new DataRet<>("积分操作成功");
+    }
+
+    /**
+     * 根据用户Id查询用户积分
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public DataRet<Point> findPointByUserId(String userId) {
+        Point point = pointMapper.findByOpenid(userId);
+        if(point == null){
+            return new DataRet<>("ERROR","查询积分失败");
+        }
+        return new DataRet<>(point);
+    }
+
 
 }

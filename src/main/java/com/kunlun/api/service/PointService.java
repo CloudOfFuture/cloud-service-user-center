@@ -1,5 +1,6 @@
 package com.kunlun.api.service;
 
+import com.kunlun.entity.Point;
 import com.kunlun.result.DataRet;
 
 /**
@@ -17,4 +18,19 @@ public interface PointService {
      * @return
      */
     DataRet<String> checkPoint(Integer pointValue, String openid);
+
+    /**
+     * 操作用户积分
+     * @param point
+     * @param userId
+     * @return
+     */
+    DataRet<String> updatePoint(Integer point,String userId);
+
+    /**
+     * 根据用户Id查询用户积分
+     * @param userId
+     * @return
+     */
+    DataRet<Point> findPointByUserId(String userId);
 }

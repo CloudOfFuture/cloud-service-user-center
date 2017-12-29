@@ -19,5 +19,14 @@ public interface PointMapper {
      * @return
      */
     Point findByOpenid(@Param("openid") String openid);
-    
+
+    /**
+     * 操作用户积分
+     * @param userId
+     * @param point
+     * @return
+     */
+    Integer updatePoint(@Param("userId") String userId,
+                        @Param(("point")) Integer point);
+
 }

@@ -7,4 +7,10 @@
     <select id="findByOpenid" resultType="com.kunlun.entity.Point">
         SELECT * FROM t_point WHERE user_id = #{openid}
     </select>
+
+    <!--操作用户积分-->
+    <update id="updatePoint">
+        UPDATE t_point SET point = point + #{point}
+        WHERE user_id = #{userId}
+    </update>
 </mapper>
