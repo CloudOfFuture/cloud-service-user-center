@@ -3,12 +3,9 @@ package com.kunlun.api.service;
 import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.util.StringUtil;
 import com.kunlun.api.client.FileClient;
 import com.kunlun.api.mapper.UserMapper;
-import com.kunlun.entity.MallImage;
 import com.kunlun.entity.MallImg;
-import com.kunlun.entity.SysRole;
 import com.kunlun.entity.User;
 import com.kunlun.enums.CommonEnum;
 import com.kunlun.result.DataRet;
@@ -17,11 +14,6 @@ import com.kunlun.utils.CommonUtil;
 import com.kunlun.utils.EncryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author JackSpeed
