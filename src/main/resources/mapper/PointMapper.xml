@@ -5,7 +5,7 @@
 <mapper namespace="com.kunlun.api.mapper.PointMapper">
     <!--微信根据open_id查询积分信息-->
     <select id="findByOpenid" resultType="com.kunlun.entity.Point">
-        SELECT * FROM t_point WHERE user_id = #{openid}
+        SELECT * FROM t_point WHERE user_id = #{userId}
     </select>
 
     <!--操作用户积分-->
