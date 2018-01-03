@@ -1,6 +1,8 @@
 package com.kunlun.api.mapper;
 
+import com.github.pagehelper.Page;
 import com.kunlun.entity.Point;
+import com.kunlun.entity.PointLog;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,4 +31,12 @@ public interface PointMapper {
     Integer updatePoint(@Param("userId") String userId,
                         @Param(("point")) Integer point);
 
+
+    /**
+     * 获取积分列表
+     *
+     * @param userId
+     * @return
+     */
+    Page<PointLog> findByUserId(@Param("userId") String userId);
 }

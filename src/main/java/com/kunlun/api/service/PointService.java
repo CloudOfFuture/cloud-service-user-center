@@ -1,7 +1,9 @@
 package com.kunlun.api.service;
 
 import com.kunlun.entity.Point;
+import com.kunlun.entity.PointLog;
 import com.kunlun.result.DataRet;
+import com.kunlun.result.PageResult;
 
 /**
  * @author by kunlun
@@ -33,4 +35,16 @@ public interface PointService {
      * @return
      */
     DataRet<Point> findPointByUserId(String userId);
+
+
+
+    /**
+     * 获取积分记录
+     *
+     * @param pageNo
+     * @param pageSize
+     * @param wxCode
+     * @return
+     */
+    PageResult findPointLog(Integer pageNo, Integer pageSize, String wxCode);
 }

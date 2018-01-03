@@ -2,7 +2,9 @@ package com.kunlun.api.controller;
 
 import com.kunlun.api.service.PointService;
 import com.kunlun.entity.Point;
+import com.kunlun.entity.PointLog;
 import com.kunlun.result.DataRet;
+import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +17,7 @@ import java.util.logging.Logger;
  */
 @RestController
 @RequestMapping("point")
-public class PintController {
+public class PointController {
 
 
     private Logger LOGGER = Logger.getLogger("日志");
@@ -57,6 +59,22 @@ public class PintController {
     @GetMapping("/findPointByUserId")
     public DataRet<Point> findPointByUserId(String userId){
         return pointService.findPointByUserId(userId);
+    }
+
+
+    /**
+     * 获取积分记录列表
+     *
+     * @param pageNo
+     * @param pageSize
+     * @param wxCode
+     * @return
+     */
+    @GetMapping("/findPointLog")
+    public PageResult findPointLog(@RequestParam(value = "pageNo") Integer pageNo,
+                                             @RequestParam(value = "pageSize") Integer pageSize,
+                                             @RequestParam(value = "wxCode") String wxCode){
+        return pointService.findPointLog(pageNo,pageSize,wxCode);
     }
 
 }
