@@ -79,12 +79,12 @@ public class DeliveryController {
     /**
      * 删除收货地址
      *
-     * @param delivery
+     * @param id
      * @return
      */
     @PostMapping("/delete")
-    public DataRet<String> delete(@RequestBody Delivery delivery){
-        return deliveryService.delete(delivery);
+    public DataRet<String> delete(@RequestParam(value = "id") Long id){
+        return deliveryService.delete(id);
     }
 
 

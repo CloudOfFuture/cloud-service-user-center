@@ -133,34 +133,27 @@ public class DeliveryServiceImpl implements DeliveryService {
     /**
      * 删除收货地址
      *
-     * @param delivery
+     * @param id
      * @return
      */
     @Override
-    public DataRet<String> delete(Delivery delivery) {
-        if (StringUtil.isEmpty(delivery.getWxCode())) {
-            return new DataRet<>("ERROR", "参数错误");
-        }
-        String userId = WxUtil.getOpenId(delivery.getWxCode());
+    public DataRet<String> delete(Long id) {
         //查询收货地址是否为默认地址
-        Delivery delivery1 = deliveryMapper.findDetailById(delivery.getId());
-        if (CommonEnum.DEFAULT_ADDRESS.getCode().equals(delivery1.getDefaultAddress())) {
-            Integer result = deliveryMapper.deleteById(delivery.getId());
-            if (result <= 0) {
-                return new DataRet<>("ERROR", "删除失败");
-            }
-            Page<Delivery> page = deliveryMapper.findByWxCode(userId);
+        Delivery delivery = deliveryMapper.findDetailById(id);
+        Integer result = deliveryMapper.deleteById(id);
+        if (result <= 0) {
+            return new DataRet<>("ERROR", "删除失败");
+        }
+        if (CommonEnum.DEFAULT_ADDRESS.getCode().equals(delivery.getDefaultAddress())){
+            Page<Delivery> page = deliveryMapper.findByWxCode(delivery.getUserId());
             if (page.size() > 0) {
                 Integer updateResult = deliveryMapper.updateDefaultAddress(page.get(0).getId());
                 if (updateResult <= 0) {
                     return new DataRet<>("ERROR", "设置默认地址失败");
                 }
+                return new DataRet<>("删除成功");
             }
             return new DataRet<>("删除成功");
-        }
-        Integer result = deliveryMapper.deleteById(delivery.getId());
-        if (result <= 0) {
-            return new DataRet<>("ERROR", "删除失败");
         }
         return new DataRet<>("删除成功");
     }

@@ -58,10 +58,10 @@ public interface DeliveryService {
     /**
      * 删除收货地址
      *
-     * @param delivery
+     * @param id
      * @return
      */
-    DataRet<String> delete(Delivery delivery);
+    DataRet<String> delete(Long id);
 
     /**
      * 设置默认地址
