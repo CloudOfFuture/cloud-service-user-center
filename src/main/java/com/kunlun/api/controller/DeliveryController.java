@@ -95,7 +95,8 @@ public class DeliveryController {
      * @return
      */
     @PostMapping("/defaultAddress")
-    public DataRet<String> defaultAddress(Long id, String wxCode) {
+    public DataRet<String> defaultAddress(@RequestParam(value = "id") Long id,
+                                          @RequestParam("wxCode") String wxCode) {
         return deliveryService.defaultAddress(id, wxCode);
     }
 
@@ -107,7 +108,7 @@ public class DeliveryController {
      * @return
      */
     @RequestMapping(value = "/getDefault", method = RequestMethod.GET)
-    public DataRet<Delivery> getDefault(String wxCode) {
+    public DataRet<Delivery> getDefault(@RequestParam(value = "wxCode") String wxCode) {
         return deliveryService.getDefault(wxCode);
     }
 }
