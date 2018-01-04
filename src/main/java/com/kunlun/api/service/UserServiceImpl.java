@@ -4,8 +4,10 @@ import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.kunlun.api.client.FileClient;
+import com.kunlun.api.client.SysRoleClient;
 import com.kunlun.api.mapper.UserMapper;
 import com.kunlun.entity.MallImg;
+import com.kunlun.entity.SysRole;
 import com.kunlun.entity.User;
 import com.kunlun.enums.CommonEnum;
 import com.kunlun.result.DataRet;
@@ -29,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     FileClient fileClient;
+
+    @Autowired
+    SysRoleClient roleClient;
 
     @Override
     public DataRet login(String mobile, String password, String ip) throws Exception {
@@ -99,7 +104,7 @@ public class UserServiceImpl implements UserService {
         //存储证件照片
         saveIdPhotoImage(user.getId(), user.getIdPhotoFrontUrl(), user.getIdPhotoBgUrl());
         //绑定商户角色
-        bindRole(user.getId());
+        bindRole(user);
         //将用户手机号码作为加密字符串回传
         String tokenStr = EncryptUtil.aesEncrypt(user.getMobile(), "ScorpionMall8888");
         user.setToken(tokenStr);
@@ -286,14 +291,15 @@ public class UserServiceImpl implements UserService {
     /**
      * 绑定商户角色
      *
-     * @param userId 用户id（商户id）
+     * @param user 用户id（商户id）
      */
-    private void bindRole(Long userId) {
-        //TODO：绑定角色
-//        SysRole role = roleMapper.findSellerRole();
-//        //查询普通角色
-//        if (role != null) {
-//            roleMapper.addRoleRelation(userId, role.getId());
-//        }
+    private void bindRole(User user) {
+        if (!CommonEnum.USER_ORDINARY.getCode().equals(user.getUserType())) {
+            return;
+        }
+        DataRet<SysRole> roleResult = roleClient.findSellerRole();
+        if (roleResult.isSuccess() && roleResult.getBody() != null) {
+            roleClient.userBindRole(user.getId(), roleResult.getBody().getId());
+        }
     }
 }
