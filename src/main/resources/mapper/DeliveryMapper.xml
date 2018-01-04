@@ -3,8 +3,110 @@
         PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kunlun.api.mapper.DeliveryMapper">
+
+
     <!--根据id查找收获地址详情-->
     <select id="findDetailById" resultType="com.kunlun.entity.Delivery">
         SELECT * from t_delivery WHERE id = #{id}
+    </select>
+
+
+    <!--分页查询用户收货地址-->
+    <select id="findByWxCode" resultType="com.kunlun.entity.Delivery">
+        SELECT id,
+        user_id,
+        recipients,
+        phone,
+        province,
+        city,
+        area,
+        address,
+        post_code,
+        post_code,
+        create_date,
+        update_date,
+        type,
+        default_address
+        FROM t_delivery
+        WHERE user_id=#{userId}
+    </select>
+
+    <!--新增收货地址-->
+    <insert id="add" parameterType="com.kunlun.entity.Delivery">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_delivery(user_id,
+        recipients,
+        phone,
+        province,
+        city,
+        area,
+        address,
+        post_code,
+        create_date,
+        update_date,
+        type,
+        default_address)
+        VALUES(#{userId},
+        #{recipients},
+        #{phone},
+        #{province},
+        #{city},
+        #{area},
+        #{address},
+        #{postCode},
+        NOW(),
+        NOW(),
+        #{type},
+        'DEFAULT_ADDRESS')
+    </insert>
+
+    <!--修改其他的地址为不默认地址-->
+    <update id="updateDefaultById">
+        UPDATE t_delivery SET default_address='UN_DEFAULT_ADDRESS' WHERE user_id=#{userId} AND id !=#{id}
+    </update>
+
+    <!--修改收货地址-->
+    <update id="updateDelivery" parameterType="com.kunlun.entity.Delivery">
+        UPDATE t_delivery SET
+        <if test="recipients!=null">recipients=#{recipients},</if>
+        <if test="phone!=null">phone=#{phone},</if>
+        <if test="province!=null">province=#{province},</if>
+        <if test="city!=null">city=#{city},</if>
+        <if test="area!=null">area=#{area},</if>
+        <if test="address!=null">address=#{address},</if>
+        <if test="postCode!=null">post_code=#{postCode},</if>
+        <if test="type!=null">type=#{type},</if>
+        update_date=NOW()
+        WHERE id=#{id}
+    </update>
+
+
+    <!-- 删除收货地址 -->
+    <delete id="deleteById">
+        DELETE FROM t_delivery WHERE id=#{id}
+    </delete>
+
+
+    <!-- 默认收货地址 -->
+    <update id="updateDefaultAddress">
+        UPDATE t_delivery SET default_address='DEFAULT_ADDRESS' WHERE id=#{id}
+    </update>
+
+    <!--获取默认地址-->
+    <select id="getDefault" resultType="com.kunlun.entity.Delivery">
+        SELECT id,
+        user_id,
+        recipients,
+        phone,
+        province,
+        city,
+        area,
+        address,
+        post_code,
+        default_address
+        FROM t_delivery
+        WHERE user_id=#{userId} AND default_address='DEFAULT_ADDRESS'
     </select>
 </mapper>

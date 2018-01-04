@@ -5,7 +5,7 @@
 <mapper namespace="com.kunlun.api.mapper.PointMapper">
     <!--微信根据open_id查询积分信息-->
     <select id="findByOpenid" resultType="com.kunlun.entity.Point">
-        SELECT * FROM t_point WHERE user_id = #{openid}
+        SELECT * FROM t_point WHERE user_id = #{userId}
     </select>
 
     <!--操作用户积分-->
@@ -13,4 +13,15 @@
         UPDATE t_point SET point = point + #{point}
         WHERE user_id = #{userId}
     </update>
+
+
+    <!--获取积分记录-->
+    <select id="findByUserId" resultType="com.kunlun.entity.PointLog">
+        SELECT id,
+        action,
+        current_point,
+        operate_point
+        FROM t_point_log
+        WHERE user_id=#{userId}
+    </select>
 </mapper>

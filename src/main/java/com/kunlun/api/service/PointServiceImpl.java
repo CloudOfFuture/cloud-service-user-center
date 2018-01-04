@@ -1,8 +1,14 @@
 package com.kunlun.api.service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.util.StringUtil;
 import com.kunlun.api.mapper.PointMapper;
 import com.kunlun.entity.Point;
+import com.kunlun.entity.PointLog;
 import com.kunlun.result.DataRet;
+import com.kunlun.result.PageResult;
+import com.kunlun.utils.WxUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +28,16 @@ public class PointServiceImpl implements PointService {
      * 积分检查
      *
      * @param pointValue 使用积分
-     * @param openid     openid
+     * @param wxCode     wxCode
      * @return
      */
     @Override
-    public DataRet<String> checkPoint(Integer pointValue, String openid) {
-        Point point = pointMapper.findByOpenid(openid);
+    public DataRet<String> checkPoint(Integer pointValue, String wxCode) {
+        if (StringUtil.isEmpty(wxCode)){
+            return new DataRet<>("ERROR","参数错误");
+        }
+        String userId=WxUtil.getOpenId(wxCode);
+        Point point = pointMapper.findByOpenid(userId);
         if (null == point) {
             if (pointValue > 0) {
                 return new DataRet<>("Error","没有可使用的积分");
@@ -42,11 +52,15 @@ public class PointServiceImpl implements PointService {
      * 操作用户积分
      *
      * @param point
-     * @param userId
+     * @param wxCode
      * @return
      */
     @Override
-    public DataRet<String> updatePoint(Integer point, String userId) {
+    public DataRet<String> updatePoint(Integer point, String wxCode) {
+        if (StringUtil.isEmpty(wxCode)){
+            return new DataRet<>("ERROR","参数错误");
+        }
+        String userId=WxUtil.getOpenId(wxCode);
         Integer result = pointMapper.updatePoint(userId,point);
         if(result<=0){
             return new DataRet<>("ERROR","修改用户积分失败");
@@ -57,16 +71,43 @@ public class PointServiceImpl implements PointService {
     /**
      * 根据用户Id查询用户积分
      *
-     * @param userId
+     * @param wxCode
      * @return
      */
     @Override
-    public DataRet<Point> findPointByUserId(String userId) {
+    public DataRet<Point> findPointByUserId(String wxCode) {
+        if (StringUtil.isEmpty(wxCode)){
+            return new DataRet<>("ERROR","参数错误");
+        }
+        String userId=WxUtil.getOpenId(wxCode);
         Point point = pointMapper.findByOpenid(userId);
         if(point == null){
-            return new DataRet<>("ERROR","查询积分失败");
+            point=new Point();
+            point.setPoint(0);
+            point.setLevel(0);
+            point.setLevelName("白银");
         }
         return new DataRet<>(point);
+    }
+
+
+    /**
+     * 获取积分记录
+     *
+     * @param pageNo
+     * @param pageSize
+     * @param wxCode
+     * @return
+     */
+    @Override
+    public PageResult findPointLog(Integer pageNo, Integer pageSize, String wxCode) {
+        if (StringUtil.isEmpty(wxCode)){
+            return new PageResult("ERROR","参数错误");
+        }
+        String userId= WxUtil.getOpenId(wxCode);
+        PageHelper.startPage(pageNo,pageSize);
+        Page<PointLog>page=pointMapper.findByUserId(userId);
+        return new PageResult(page);
     }
 
 
