@@ -107,7 +107,7 @@ public class DeliveryController {
      * @param wxCode
      * @return
      */
-    @RequestMapping(value = "/getDefault", method = RequestMethod.GET)
+    @GetMapping("/getDefault")
     public DataRet<Delivery> getDefault(@RequestParam(value = "wxCode") String wxCode) {
         return deliveryService.getDefault(wxCode);
     }
