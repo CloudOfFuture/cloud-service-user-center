@@ -82,7 +82,10 @@ public class PointServiceImpl implements PointService {
         String userId=WxUtil.getOpenId(wxCode);
         Point point = pointMapper.findByOpenid(userId);
         if(point == null){
-            return new DataRet<>("ERROR","查询积分失败");
+            point=new Point();
+            point.setPoint(0);
+            point.setLevel(0);
+            point.setLevelName("白银");
         }
         return new DataRet<>(point);
     }
