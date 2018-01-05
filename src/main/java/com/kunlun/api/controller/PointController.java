@@ -29,36 +29,36 @@ public class PointController {
      * 积分检查
      *
      * @param pointValue 使用积分
-     * @param wxCode     wxCode
+     * @param openid     openid
      * @return
      */
     @GetMapping("/checkPoint")
     public DataRet<String> checkPoint(@RequestParam(value = "pointValue") Integer pointValue,
-                              @RequestParam(value = "wxCode") String wxCode) {
+                              @RequestParam(value = "openid") String openid) {
         LOGGER.info("积分检查");
-        return pointService.checkPoint(pointValue, wxCode);
+        return pointService.checkPoint(pointValue, openid);
     }
 
     /**
      * 操作用户积分（增,减）
      * @param point
-     * @param wxCode
+     * @param userId
      * @return
      */
     @PostMapping("/updatePoint")
     public DataRet<String> updatePoint(@RequestParam(value = "point") Integer point,
-                                       @RequestParam(value = "wxCode") String wxCode){
-        return pointService.updatePoint(point,wxCode);
+                                       @RequestParam(value = "userId") String userId){
+        return pointService.updatePoint(point,userId);
     }
 
     /**
      * 根据userId查询用户积分
-     * @param wxCode
+     * @param userId
      * @return
      */
     @GetMapping("/findPointByUserId")
-    public DataRet<Point> findPointByUserId(@RequestParam(value = "wxCode") String wxCode){
-        return pointService.findPointByUserId(wxCode);
+    public DataRet<Point> findPointByUserId(@RequestParam(value = "userId") String userId){
+        return pointService.findPointByUserId(userId);
     }
 
 
