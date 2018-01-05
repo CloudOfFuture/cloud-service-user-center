@@ -28,16 +28,15 @@ public class PointServiceImpl implements PointService {
      * 积分检查
      *
      * @param pointValue 使用积分
-     * @param wxCode     wxCode
+     * @param openid     openid
      * @return
      */
     @Override
-    public DataRet<String> checkPoint(Integer pointValue, String wxCode) {
-        if (StringUtil.isEmpty(wxCode)){
+    public DataRet<String> checkPoint(Integer pointValue, String openid) {
+        if (StringUtil.isEmpty(openid)){
             return new DataRet<>("ERROR","参数错误");
         }
-        String userId=WxUtil.getOpenId(wxCode);
-        Point point = pointMapper.findByOpenid(userId);
+        Point point = pointMapper.findByOpenid(openid);
         if (null == point) {
             if (pointValue > 0) {
                 return new DataRet<>("Error","没有可使用的积分");
@@ -52,15 +51,14 @@ public class PointServiceImpl implements PointService {
      * 操作用户积分
      *
      * @param point
-     * @param wxCode
+     * @param userId
      * @return
      */
     @Override
-    public DataRet<String> updatePoint(Integer point, String wxCode) {
-        if (StringUtil.isEmpty(wxCode)){
+    public DataRet<String> updatePoint(Integer point, String userId) {
+        if (StringUtil.isEmpty(userId)){
             return new DataRet<>("ERROR","参数错误");
         }
-        String userId=WxUtil.getOpenId(wxCode);
         Integer result = pointMapper.updatePoint(userId,point);
         if(result<=0){
             return new DataRet<>("ERROR","修改用户积分失败");
@@ -71,15 +69,14 @@ public class PointServiceImpl implements PointService {
     /**
      * 根据用户Id查询用户积分
      *
-     * @param wxCode
+     * @param userId
      * @return
      */
     @Override
-    public DataRet<Point> findPointByUserId(String wxCode) {
-        if (StringUtil.isEmpty(wxCode)){
+    public DataRet<Point> findPointByUserId(String userId) {
+        if (StringUtil.isEmpty(userId)){
             return new DataRet<>("ERROR","参数错误");
         }
-        String userId=WxUtil.getOpenId(wxCode);
         Point point = pointMapper.findByOpenid(userId);
         if(point == null){
             point=new Point();
