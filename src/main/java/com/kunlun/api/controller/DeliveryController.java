@@ -12,32 +12,36 @@ import org.springframework.web.bind.annotation.*;
  * @created on 2017/12/25.
  */
 @RestController
-@RequestMapping("delivery")
+@RequestMapping("/delivery")
 public class DeliveryController {
     @Autowired
     private DeliveryService deliveryService;
 
     /**
-     * 根据收获地址id查找收获地址详情
+     * 根据收货地址id查找收获地址详情
+     *
      * @param id
      * @return
      */
-    @GetMapping("findDetailById")
-    public DataRet<Delivery> findDetailById(@RequestParam(value = "id") Long id){
+    @GetMapping("/findById")
+    public DataRet<Delivery> findDetailById(@RequestParam(value = "id") Long id) {
         return deliveryService.findDetailById(id);
     }
 
     /**
      * 根据id校验收获地址有效性
+     *
      * @param id
      * @return
      */
     @GetMapping("checkDelivery")
-    public DataRet<Delivery> check(@RequestParam(value = "id") Long id){return deliveryService.check(id);}
+    public DataRet<Delivery> check(@RequestParam(value = "id") Long id) {
+        return deliveryService.check(id);
+    }
 
 
     /**
-     *用户收货地址分页
+     * 用户收货地址分页
      *
      * @param wxCode
      * @param pageNo
@@ -47,8 +51,8 @@ public class DeliveryController {
     @GetMapping("/findByWxCode")
     public PageResult findByWxCode(@RequestParam(value = "wxCode") String wxCode,
                                    @RequestParam(value = "pageNo") Integer pageNo,
-                                   @RequestParam(value = "pageSize") Integer pageSize){
-        return deliveryService.findByWxCode(wxCode,pageNo,pageSize);
+                                   @RequestParam(value = "pageSize") Integer pageSize) {
+        return deliveryService.findByWxCode(wxCode, pageNo, pageSize);
     }
 
 
@@ -59,7 +63,7 @@ public class DeliveryController {
      * @return
      */
     @PostMapping("/add")
-    public DataRet<String> add(@RequestBody Delivery delivery){
+    public DataRet<String> add(@RequestBody Delivery delivery) {
         return deliveryService.add(delivery);
     }
 
@@ -71,7 +75,7 @@ public class DeliveryController {
      * @return
      */
     @PostMapping("/update")
-    public DataRet<String> update(@RequestBody Delivery delivery){
+    public DataRet<String> update(@RequestBody Delivery delivery) {
         return deliveryService.update(delivery);
     }
 
@@ -83,7 +87,7 @@ public class DeliveryController {
      * @return
      */
     @PostMapping("/delete")
-    public DataRet<String> delete(@RequestParam(value = "id") Long id){
+    public DataRet<String> delete(@RequestParam(value = "id") Long id) {
         return deliveryService.delete(id);
     }
 
