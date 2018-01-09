@@ -46,8 +46,8 @@ public class DeliveryServiceImpl implements DeliveryService {
      * @return
      */
     @Override
-    public DataRet<Delivery> check(Long id) {
-        Delivery delivery = deliveryMapper.findDetailById(id);
+    public DataRet<Delivery> check(Long deliveryId) {
+        Delivery delivery = deliveryMapper.findDetailById(deliveryId);
         if (delivery == null) {
             return new DataRet<>("ERROR", "查无此收货地址");
         }

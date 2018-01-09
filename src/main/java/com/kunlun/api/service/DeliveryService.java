@@ -23,7 +23,7 @@ public interface DeliveryService {
      * @param id
      * @return
      */
-    DataRet<Delivery> check(Long id);
+    DataRet<Delivery> check(Long deliverId);
 
 
     /**
