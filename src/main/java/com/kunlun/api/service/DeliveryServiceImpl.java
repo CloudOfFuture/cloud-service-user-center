@@ -9,6 +9,8 @@ import com.kunlun.enums.CommonEnum;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import com.kunlun.utils.WxUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DeliveryServiceImpl implements DeliveryService {
+
 
     @Autowired
     private DeliveryMapper deliveryMapper;
@@ -129,7 +132,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         if (result <= 0) {
             return new DataRet<>("ERROR", "删除失败");
         }
-        if (CommonEnum.DEFAULT_ADDRESS.getCode().equals(delivery.getDefaultAddress())){
+        if (CommonEnum.DEFAULT_ADDRESS.getCode().equals(delivery.getDefaultAddress())) {
             Page<Delivery> page = deliveryMapper.findByWxCode(delivery.getUserId());
             if (page.size() > 0) {
                 Integer updateResult = deliveryMapper.updateDefaultAddress(page.get(0).getId());
@@ -180,13 +183,13 @@ public class DeliveryServiceImpl implements DeliveryService {
      */
     @Override
     public DataRet<Delivery> getDefault(String wxCode) {
-        if (StringUtil.isEmpty(wxCode)){
-            return new DataRet<>("ERROR","参数错误");
+        if (StringUtil.isEmpty(wxCode)) {
+            return new DataRet<>("ERROR", "参数错误");
         }
-        String userId=WxUtil.getOpenId(wxCode);
-        Delivery delivery=deliveryMapper.getDefault(userId);
-        if (delivery==null){
-            return new DataRet<>("ERROR","查无结果");
+        String userId = WxUtil.getOpenId(wxCode);
+        Delivery delivery = deliveryMapper.getDefault(userId);
+        if (delivery == null) {
+            return new DataRet<>("ERROR", "查无结果");
         }
         return new DataRet<>(delivery);
     }
