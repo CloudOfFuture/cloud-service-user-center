@@ -39,21 +39,6 @@ public class DeliveryServiceImpl implements DeliveryService {
         return new DataRet<>(delivery);
     }
 
-    /**
-     * 根据id校验收货地址有效性
-     *
-     * @param id
-     * @return
-     */
-    @Override
-    public DataRet<Delivery> check(Long deliveryId) {
-        Delivery delivery = deliveryMapper.findDetailById(deliveryId);
-        if (delivery == null) {
-            return new DataRet<>("ERROR", "查无此收货地址");
-        }
-        return new DataRet<>(delivery);
-    }
-
 
     /**
      * 用户收货地址分页

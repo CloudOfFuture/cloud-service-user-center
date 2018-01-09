@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * @created on 2017/12/25.
  */
 @RestController
-@RequestMapping("delivery")
+@RequestMapping("/delivery")
 public class DeliveryController {
     @Autowired
     private DeliveryService deliveryService;
@@ -28,16 +28,6 @@ public class DeliveryController {
         return deliveryService.findDetailById(deliveryId);
     }
 
-    /**
-     * 根据id校验收获地址有效性
-     *
-     * @param id
-     * @return
-     */
-    @GetMapping("checkDelivery")
-    public DataRet<Delivery> check(@RequestParam(value = "deliveryId") Long deliveryId) {
-        return deliveryService.check(deliveryId);
-    }
 
 
     /**
