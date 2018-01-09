@@ -26,13 +26,13 @@ public class DeliveryServiceImpl implements DeliveryService {
     /**
      * 根据收获地址id查找详情
      *
-     * @param id
+     * @param deliveryId
      * @return
      */
     @Override
-    public DataRet<Delivery> findDetailById(Long id) {
+    public DataRet<Delivery> findDetailById(Long deliveryId) {
 
-        Delivery delivery = deliveryMapper.findDetailById(id);
+        Delivery delivery = deliveryMapper.findDetailById(deliveryId);
         if (delivery == null) {
             return new DataRet("Error", "查无此收货信息");
         }

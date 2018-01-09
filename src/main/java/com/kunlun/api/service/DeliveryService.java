@@ -13,10 +13,10 @@ public interface DeliveryService {
 
     /**
      * 根据收获地址id查找详情
-     * @param id
+     * @param deliveryId
      * @return
      */
-    DataRet<Delivery> findDetailById(Long id);
+    DataRet<Delivery> findDetailById(Long deliveryId);
 
     /**
      * 根据id校验收获地址有效性
