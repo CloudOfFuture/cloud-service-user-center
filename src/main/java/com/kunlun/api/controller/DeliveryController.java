@@ -43,7 +43,7 @@ public class DeliveryController {
     @GetMapping("/findByWxCode")
     public PageResult findByWxCode(@RequestParam(value = "wxCode") String wxCode,
                                    @RequestParam(value = "pageNo") Integer pageNo,
-                                   @RequestParam(value = "pageSize") Integer pageSize) throws IOException {
+                                   @RequestParam(value = "pageSize") Integer pageSize) {
         return deliveryService.findByWxCode(wxCode, pageNo, pageSize);
     }
 
@@ -55,7 +55,7 @@ public class DeliveryController {
      * @return
      */
     @PostMapping("/add")
-    public DataRet<String> add(@RequestBody Delivery delivery) throws IOException {
+    public DataRet<String> add(@RequestBody Delivery delivery) {
         return deliveryService.add(delivery);
     }
 
@@ -92,7 +92,7 @@ public class DeliveryController {
      */
     @PostMapping("/defaultAddress")
     public DataRet<String> defaultAddress(@RequestParam(value = "id") Long id,
-                                          @RequestParam("wxCode") String wxCode) throws IOException {
+                                          @RequestParam("wxCode") String wxCode) {
         return deliveryService.defaultAddress(id, wxCode);
     }
 
@@ -104,7 +104,7 @@ public class DeliveryController {
      * @return
      */
     @GetMapping("/getDefault")
-    public DataRet<Delivery> getDefault(@RequestParam(value = "wxCode") String wxCode) throws IOException {
+    public DataRet<Delivery> getDefault(@RequestParam(value = "wxCode") String wxCode) {
         return deliveryService.getDefault(wxCode);
     }
 }

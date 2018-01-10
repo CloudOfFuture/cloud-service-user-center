@@ -35,30 +35,32 @@ public class PointController {
      */
     @GetMapping("/checkPoint")
     public DataRet<String> checkPoint(@RequestParam(value = "pointValue") Integer pointValue,
-                              @RequestParam(value = "openid") String openid) {
+                                      @RequestParam(value = "openid") String openid) {
         LOGGER.info("积分检查");
         return pointService.checkPoint(pointValue, openid);
     }
 
     /**
      * 操作用户积分（增,减）
+     *
      * @param point
      * @param userId
      * @return
      */
     @PostMapping("/updatePoint")
     public DataRet<String> updatePoint(@RequestParam(value = "point") Integer point,
-                                       @RequestParam(value = "userId") String userId){
-        return pointService.updatePoint(point,userId);
+                                       @RequestParam(value = "userId") String userId) {
+        return pointService.updatePoint(point, userId);
     }
 
     /**
      * 根据userId查询用户积分
+     *
      * @param userId
      * @return
      */
     @GetMapping("/findPointByUserId")
-    public DataRet<Point> findPointByUserId(@RequestParam(value = "userId") String userId){
+    public DataRet<Point> findPointByUserId(@RequestParam(value = "userId") String userId) {
         return pointService.findPointByUserId(userId);
     }
 
@@ -73,9 +75,9 @@ public class PointController {
      */
     @GetMapping("/findPointLog")
     public PageResult findPointLog(@RequestParam(value = "pageNo") Integer pageNo,
-                                             @RequestParam(value = "pageSize") Integer pageSize,
-                                             @RequestParam(value = "wxCode") String wxCode) throws IOException {
-        return pointService.findPointLog(pageNo,pageSize,wxCode);
+                                   @RequestParam(value = "pageSize") Integer pageSize,
+                                   @RequestParam(value = "wxCode") String wxCode) {
+        return pointService.findPointLog(pageNo, pageSize, wxCode);
     }
 
 }

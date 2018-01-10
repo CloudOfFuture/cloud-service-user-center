@@ -25,19 +25,20 @@ public interface PointService {
 
     /**
      * 操作用户积分
+     *
      * @param point
      * @param userId
      * @return
      */
-    DataRet<String> updatePoint(Integer point,String userId);
+    DataRet<String> updatePoint(Integer point, String userId);
 
     /**
      * 根据用户Id查询用户积分
+     *
      * @param userId
      * @return
      */
     DataRet<Point> findPointByUserId(String userId);
-
 
 
     /**
@@ -48,5 +49,5 @@ public interface PointService {
      * @param wxCode
      * @return
      */
-    PageResult findPointLog(Integer pageNo, Integer pageSize, String wxCode) throws IOException;
+    PageResult findPointLog(Integer pageNo, Integer pageSize, String wxCode);
 }

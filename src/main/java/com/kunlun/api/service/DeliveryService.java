@@ -30,7 +30,7 @@ public interface DeliveryService {
      * @param pageSize
      * @return
      */
-    PageResult findByWxCode(String wxCode, Integer pageNo, Integer pageSize) throws IOException;
+    PageResult findByWxCode(String wxCode, Integer pageNo, Integer pageSize);
 
 
     /**
@@ -39,7 +39,7 @@ public interface DeliveryService {
      * @param delivery
      * @return
      */
-    DataRet<String> add(Delivery delivery) throws IOException;
+    DataRet<String> add(Delivery delivery);
 
 
     /**
@@ -66,7 +66,7 @@ public interface DeliveryService {
      * @param wxCode
      * @return
      */
-    DataRet<String> defaultAddress(Long id, String wxCode) throws IOException;
+    DataRet<String> defaultAddress(Long id, String wxCode);
 
 
     /**
@@ -75,5 +75,5 @@ public interface DeliveryService {
      * @param wxCode
      * @return
      */
-    DataRet<Delivery> getDefault(String wxCode) throws IOException;
+    DataRet<Delivery> getDefault(String wxCode);
 }

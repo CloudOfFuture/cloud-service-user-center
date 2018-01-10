@@ -52,7 +52,7 @@ public class DeliveryServiceImpl implements DeliveryService {
      * @return
      */
     @Override
-    public PageResult findByWxCode(String wxCode, Integer pageNo, Integer pageSize) throws IOException {
+    public PageResult findByWxCode(String wxCode, Integer pageNo, Integer pageSize) {
         if (StringUtil.isEmpty(wxCode)) {
             return new PageResult("ERROR", "参数错误");
         }
@@ -70,7 +70,7 @@ public class DeliveryServiceImpl implements DeliveryService {
      * @return
      */
     @Override
-    public DataRet<String> add(Delivery delivery) throws IOException {
+    public DataRet<String> add(Delivery delivery) {
         if (StringUtil.isEmpty(delivery.getWxCode())) {
             return new DataRet<>("ERROR", "参数错误");
         }
@@ -155,7 +155,7 @@ public class DeliveryServiceImpl implements DeliveryService {
      * @return
      */
     @Override
-    public DataRet<String> defaultAddress(Long id, String wxCode) throws IOException {
+    public DataRet<String> defaultAddress(Long id, String wxCode) {
         if (StringUtil.isEmpty(wxCode)) {
             return new DataRet<>("ERROR", "参数错误");
         }
@@ -182,7 +182,7 @@ public class DeliveryServiceImpl implements DeliveryService {
      * @return
      */
     @Override
-    public DataRet<Delivery> getDefault(String wxCode) throws IOException {
+    public DataRet<Delivery> getDefault(String wxCode) {
         if (StringUtil.isEmpty(wxCode)) {
             return new DataRet<>("ERROR", "参数错误");
         }

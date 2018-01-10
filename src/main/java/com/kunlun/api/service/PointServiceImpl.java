@@ -35,16 +35,16 @@ public class PointServiceImpl implements PointService {
      */
     @Override
     public DataRet<String> checkPoint(Integer pointValue, String openid) {
-        if (StringUtil.isEmpty(openid)){
-            return new DataRet<>("ERROR","参数错误");
+        if (StringUtil.isEmpty(openid)) {
+            return new DataRet<>("ERROR", "参数错误");
         }
         Point point = pointMapper.findByOpenid(openid);
         if (null == point) {
             if (pointValue > 0) {
-                return new DataRet<>("Error","没有可使用的积分");
+                return new DataRet<>("Error", "没有可使用的积分");
             }
         } else if (pointValue > point.getPoint()) {
-            return new DataRet<>("Error","积分不足");
+            return new DataRet<>("Error", "积分不足");
         }
         return new DataRet<>("正常");
     }
@@ -58,12 +58,12 @@ public class PointServiceImpl implements PointService {
      */
     @Override
     public DataRet<String> updatePoint(Integer point, String userId) {
-        if (StringUtil.isEmpty(userId)){
-            return new DataRet<>("ERROR","参数错误");
+        if (StringUtil.isEmpty(userId)) {
+            return new DataRet<>("ERROR", "参数错误");
         }
-        Integer result = pointMapper.updatePoint(userId,point);
-        if(result<=0){
-            return new DataRet<>("ERROR","修改用户积分失败");
+        Integer result = pointMapper.updatePoint(userId, point);
+        if (result <= 0) {
+            return new DataRet<>("ERROR", "修改用户积分失败");
         }
         return new DataRet<>("积分操作成功");
     }
@@ -76,12 +76,12 @@ public class PointServiceImpl implements PointService {
      */
     @Override
     public DataRet<Point> findPointByUserId(String userId) {
-        if (StringUtil.isEmpty(userId)){
-            return new DataRet<>("ERROR","参数错误");
+        if (StringUtil.isEmpty(userId)) {
+            return new DataRet<>("ERROR", "参数错误");
         }
         Point point = pointMapper.findByOpenid(userId);
-        if(point == null){
-            point=new Point();
+        if (point == null) {
+            point = new Point();
             point.setPoint(0);
             point.setLevel(0);
             point.setLevelName("白银");
@@ -99,13 +99,13 @@ public class PointServiceImpl implements PointService {
      * @return
      */
     @Override
-    public PageResult findPointLog(Integer pageNo, Integer pageSize, String wxCode) throws IOException {
-        if (StringUtil.isEmpty(wxCode)){
-            return new PageResult("ERROR","参数错误");
+    public PageResult findPointLog(Integer pageNo, Integer pageSize, String wxCode) {
+        if (StringUtil.isEmpty(wxCode)) {
+            return new PageResult("ERROR", "参数错误");
         }
-        String userId= WxUtil.getOpenId(wxCode);
-        PageHelper.startPage(pageNo,pageSize);
-        Page<PointLog>page=pointMapper.findByUserId(userId);
+        String userId = WxUtil.getOpenId(wxCode);
+        PageHelper.startPage(pageNo, pageSize);
+        Page<PointLog> page = pointMapper.findByUserId(userId);
         return new PageResult(page);
     }
 
