@@ -8,6 +8,7 @@ import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
@@ -73,7 +74,7 @@ public class PointController {
     @GetMapping("/findPointLog")
     public PageResult findPointLog(@RequestParam(value = "pageNo") Integer pageNo,
                                              @RequestParam(value = "pageSize") Integer pageSize,
-                                             @RequestParam(value = "wxCode") String wxCode){
+                                             @RequestParam(value = "wxCode") String wxCode) throws IOException {
         return pointService.findPointLog(pageNo,pageSize,wxCode);
     }
 

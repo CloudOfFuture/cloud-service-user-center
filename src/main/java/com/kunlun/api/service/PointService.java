@@ -5,6 +5,8 @@ import com.kunlun.entity.PointLog;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 
+import java.io.IOException;
+
 /**
  * @author by kunlun
  * @version <0.1>
@@ -46,5 +48,5 @@ public interface PointService {
      * @param wxCode
      * @return
      */
-    PageResult findPointLog(Integer pageNo, Integer pageSize, String wxCode);
+    PageResult findPointLog(Integer pageNo, Integer pageSize, String wxCode) throws IOException;
 }

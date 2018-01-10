@@ -4,6 +4,8 @@ import com.kunlun.entity.Delivery;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 
+import java.io.IOException;
+
 
 /**
  * @author by hws
@@ -28,7 +30,7 @@ public interface DeliveryService {
      * @param pageSize
      * @return
      */
-    PageResult findByWxCode(String wxCode, Integer pageNo, Integer pageSize);
+    PageResult findByWxCode(String wxCode, Integer pageNo, Integer pageSize) throws IOException;
 
 
     /**
@@ -37,7 +39,7 @@ public interface DeliveryService {
      * @param delivery
      * @return
      */
-    DataRet<String> add(Delivery delivery);
+    DataRet<String> add(Delivery delivery) throws IOException;
 
 
     /**
@@ -64,7 +66,7 @@ public interface DeliveryService {
      * @param wxCode
      * @return
      */
-    DataRet<String> defaultAddress(Long id, String wxCode);
+    DataRet<String> defaultAddress(Long id, String wxCode) throws IOException;
 
 
     /**
@@ -73,5 +75,5 @@ public interface DeliveryService {
      * @param wxCode
      * @return
      */
-    DataRet<Delivery> getDefault(String wxCode);
+    DataRet<Delivery> getDefault(String wxCode) throws IOException;
 }

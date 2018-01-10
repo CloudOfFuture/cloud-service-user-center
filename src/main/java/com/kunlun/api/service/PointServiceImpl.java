@@ -12,6 +12,8 @@ import com.kunlun.utils.WxUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 /**
  * @author by kunlun
  * @version <0.1>
@@ -97,7 +99,7 @@ public class PointServiceImpl implements PointService {
      * @return
      */
     @Override
-    public PageResult findPointLog(Integer pageNo, Integer pageSize, String wxCode) {
+    public PageResult findPointLog(Integer pageNo, Integer pageSize, String wxCode) throws IOException {
         if (StringUtil.isEmpty(wxCode)){
             return new PageResult("ERROR","参数错误");
         }

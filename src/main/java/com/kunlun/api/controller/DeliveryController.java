@@ -7,6 +7,8 @@ import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 /**
  * @author by hws
  * @created on 2017/12/25.
@@ -41,7 +43,7 @@ public class DeliveryController {
     @GetMapping("/findByWxCode")
     public PageResult findByWxCode(@RequestParam(value = "wxCode") String wxCode,
                                    @RequestParam(value = "pageNo") Integer pageNo,
-                                   @RequestParam(value = "pageSize") Integer pageSize) {
+                                   @RequestParam(value = "pageSize") Integer pageSize) throws IOException {
         return deliveryService.findByWxCode(wxCode, pageNo, pageSize);
     }
 
@@ -53,7 +55,7 @@ public class DeliveryController {
      * @return
      */
     @PostMapping("/add")
-    public DataRet<String> add(@RequestBody Delivery delivery) {
+    public DataRet<String> add(@RequestBody Delivery delivery) throws IOException {
         return deliveryService.add(delivery);
     }
 
@@ -90,7 +92,7 @@ public class DeliveryController {
      */
     @PostMapping("/defaultAddress")
     public DataRet<String> defaultAddress(@RequestParam(value = "id") Long id,
-                                          @RequestParam("wxCode") String wxCode) {
+                                          @RequestParam("wxCode") String wxCode) throws IOException {
         return deliveryService.defaultAddress(id, wxCode);
     }
 
@@ -102,7 +104,7 @@ public class DeliveryController {
      * @return
      */
     @GetMapping("/getDefault")
-    public DataRet<Delivery> getDefault(@RequestParam(value = "wxCode") String wxCode) {
+    public DataRet<Delivery> getDefault(@RequestParam(value = "wxCode") String wxCode) throws IOException {
         return deliveryService.getDefault(wxCode);
     }
 }

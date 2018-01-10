@@ -9,10 +9,10 @@ import com.kunlun.enums.CommonEnum;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import com.kunlun.utils.WxUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 
 /**
@@ -52,7 +52,7 @@ public class DeliveryServiceImpl implements DeliveryService {
      * @return
      */
     @Override
-    public PageResult findByWxCode(String wxCode, Integer pageNo, Integer pageSize) {
+    public PageResult findByWxCode(String wxCode, Integer pageNo, Integer pageSize) throws IOException {
         if (StringUtil.isEmpty(wxCode)) {
             return new PageResult("ERROR", "参数错误");
         }
@@ -70,7 +70,7 @@ public class DeliveryServiceImpl implements DeliveryService {
      * @return
      */
     @Override
-    public DataRet<String> add(Delivery delivery) {
+    public DataRet<String> add(Delivery delivery) throws IOException {
         if (StringUtil.isEmpty(delivery.getWxCode())) {
             return new DataRet<>("ERROR", "参数错误");
         }
@@ -155,7 +155,7 @@ public class DeliveryServiceImpl implements DeliveryService {
      * @return
      */
     @Override
-    public DataRet<String> defaultAddress(Long id, String wxCode) {
+    public DataRet<String> defaultAddress(Long id, String wxCode) throws IOException {
         if (StringUtil.isEmpty(wxCode)) {
             return new DataRet<>("ERROR", "参数错误");
         }
@@ -182,7 +182,7 @@ public class DeliveryServiceImpl implements DeliveryService {
      * @return
      */
     @Override
-    public DataRet<Delivery> getDefault(String wxCode) {
+    public DataRet<Delivery> getDefault(String wxCode) throws IOException {
         if (StringUtil.isEmpty(wxCode)) {
             return new DataRet<>("ERROR", "参数错误");
         }
