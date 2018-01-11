@@ -30,14 +30,14 @@ public class PointController {
      * 积分检查
      *
      * @param pointValue 使用积分
-     * @param openid     openid
+     * @param openId     openId
      * @return
      */
     @GetMapping("/checkPoint")
     public DataRet<String> checkPoint(@RequestParam(value = "pointValue") Integer pointValue,
-                                      @RequestParam(value = "openid") String openid) {
+                                      @RequestParam(value = "openId") String openId) {
         LOGGER.info("积分检查");
-        return pointService.checkPoint(pointValue, openid);
+        return pointService.checkPoint(pointValue, openId);
     }
 
     /**

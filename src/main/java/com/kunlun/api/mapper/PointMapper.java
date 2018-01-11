@@ -17,10 +17,10 @@ public interface PointMapper {
     /**
      * 根据openid查询积分信息
      *
-     * @param openid
+     * @param openId
      * @return
      */
-    Point findByOpenid(@Param("openid") String openid);
+    Point findByOpenId(@Param("openId") String openId);
 
     /**
      * 操作用户积分

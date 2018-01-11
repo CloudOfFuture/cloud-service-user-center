@@ -30,15 +30,15 @@ public class PointServiceImpl implements PointService {
      * 积分检查
      *
      * @param pointValue 使用积分
-     * @param openid     openid
+     * @param openId     openId
      * @return
      */
     @Override
-    public DataRet<String> checkPoint(Integer pointValue, String openid) {
-        if (StringUtil.isEmpty(openid)) {
+    public DataRet<String> checkPoint(Integer pointValue, String openId) {
+        if (StringUtil.isEmpty(openId)) {
             return new DataRet<>("ERROR", "参数错误");
         }
-        Point point = pointMapper.findByOpenid(openid);
+        Point point = pointMapper.findByOpenId(openId);
         if (null == point) {
             if (pointValue > 0) {
                 return new DataRet<>("Error", "没有可使用的积分");
@@ -79,7 +79,7 @@ public class PointServiceImpl implements PointService {
         if (StringUtil.isEmpty(userId)) {
             return new DataRet<>("ERROR", "参数错误");
         }
-        Point point = pointMapper.findByOpenid(userId);
+        Point point = pointMapper.findByOpenId(userId);
         if (point == null) {
             point = new Point();
             point.setPoint(0);
