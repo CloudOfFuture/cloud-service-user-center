@@ -22,29 +22,29 @@ public class DeliveryController {
     /**
      * 根据收货地址id查找收获地址详情
      *
-     * @param deliveryId
+     * @param id
      * @return
      */
     @GetMapping("/findById")
-    public DataRet<Delivery> findDetailById(@RequestParam(value = "deliveryId") Long deliveryId) {
-        return deliveryService.findDetailById(deliveryId);
+    public DataRet<Delivery> findById(@RequestParam(value = "id") Long id) {
+        return deliveryService.findById(id);
     }
-
-
 
     /**
      * 用户收货地址分页
      *
-     * @param wxCode
-     * @param pageNo
-     * @param pageSize
-     * @return
+     * @param wxCode   String 小程序用户id
+     * @param pageNo   Integer
+     * @param userId   Long  商户（卖家id）
+     * @param pageSize Integer
+     * @return PageResult
      */
-    @GetMapping("/findByWxCode")
-    public PageResult findByWxCode(@RequestParam(value = "wxCode") String wxCode,
+    @GetMapping("/findByUserId")
+    public PageResult findByUserId(@RequestParam(value = "wxCode", required = false) String wxCode,
+                                   @RequestParam(value = "userId", required = false) Long userId,
                                    @RequestParam(value = "pageNo") Integer pageNo,
                                    @RequestParam(value = "pageSize") Integer pageSize) {
-        return deliveryService.findByWxCode(wxCode, pageNo, pageSize);
+        return deliveryService.findByUserId(wxCode, userId, pageNo, pageSize);
     }
 
 
@@ -78,9 +78,9 @@ public class DeliveryController {
      * @param id
      * @return
      */
-    @PostMapping("/delete")
-    public DataRet<String> delete(@RequestParam(value = "id") Long id) {
-        return deliveryService.delete(id);
+    @PostMapping("/deleteById")
+    public DataRet<String> deleteById(@RequestParam(value = "id") Long id) {
+        return deliveryService.deleteById(id);
     }
 
 
@@ -92,8 +92,9 @@ public class DeliveryController {
      */
     @PostMapping("/defaultAddress")
     public DataRet<String> defaultAddress(@RequestParam(value = "id") Long id,
-                                          @RequestParam("wxCode") String wxCode) {
-        return deliveryService.defaultAddress(id, wxCode);
+                                          @RequestParam(value = "wxCode", required = false) String wxCode,
+                                          @RequestParam(value = "userId", required = false) Long userId) {
+        return deliveryService.defaultAddress(id, wxCode, userId);
     }
 
 
@@ -101,10 +102,12 @@ public class DeliveryController {
      * 获取默认地址
      *
      * @param wxCode
+     * @param userId
      * @return
      */
     @GetMapping("/getDefault")
-    public DataRet<Delivery> getDefault(@RequestParam(value = "wxCode") String wxCode) {
-        return deliveryService.getDefault(wxCode);
+    public DataRet<Delivery> getDefault(@RequestParam(value = "wxCode", required = false) String wxCode,
+                                        @RequestParam(value = "userId", required = false) Long userId) {
+        return deliveryService.getDefault(wxCode, userId);
     }
 }

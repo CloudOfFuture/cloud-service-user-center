@@ -12,8 +12,6 @@ import com.kunlun.utils.WxUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-
 
 /**
  * @author by hws
@@ -33,11 +31,10 @@ public class DeliveryServiceImpl implements DeliveryService {
      * @return
      */
     @Override
-    public DataRet<Delivery> findDetailById(Long deliveryId) {
-
-        Delivery delivery = deliveryMapper.findDetailById(deliveryId);
+    public DataRet<Delivery> findById(Long deliveryId) {
+        Delivery delivery = deliveryMapper.findById(deliveryId);
         if (delivery == null) {
-            return new DataRet("Error", "查无此收货信息");
+            return new DataRet<>("Error", "查无此收货信息");
         }
         return new DataRet<>(delivery);
     }
@@ -46,52 +43,55 @@ public class DeliveryServiceImpl implements DeliveryService {
     /**
      * 用户收货地址分页
      *
-     * @param wxCode
-     * @param pageNo
-     * @param pageSize
-     * @return
+     * @param wxCode   String 小程序用户id
+     * @param pageNo   Integer
+     * @param userId   Long  商户（卖家id）
+     * @param pageSize Integer
+     * @return PageResult
      */
     @Override
-    public PageResult findByWxCode(String wxCode, Integer pageNo, Integer pageSize) {
-        if (StringUtil.isEmpty(wxCode)) {
+    public PageResult findByUserId(String wxCode, Long userId, Integer pageNo, Integer pageSize) {
+        if (StringUtil.isEmpty(wxCode) && userId == null) {
             return new PageResult("ERROR", "参数错误");
         }
         PageHelper.startPage(pageNo, pageSize);
-        String userId = WxUtil.getOpenId(wxCode);
-        Page<Delivery> page = deliveryMapper.findByWxCode(userId);
-        return new PageResult(page);
+        String dUserId;
+        if (userId == null) {
+            dUserId = WxUtil.getOpenId(wxCode);
+        } else {
+            dUserId = String.valueOf(userId);
+        }
+        if (dUserId == null) {
+            return new PageResult<>();
+        }
+        Page<Delivery> page = deliveryMapper.findByUserId(dUserId);
+        return new PageResult<>(page);
     }
 
 
     /**
      * 新增收货地址
      *
-     * @param delivery
-     * @return
+     * @param delivery Delivery
+     * @return DataRet
      */
     @Override
     public DataRet<String> add(Delivery delivery) {
-        if (StringUtil.isEmpty(delivery.getWxCode())) {
+        if (StringUtil.isEmpty(delivery.getWxCode()) && StringUtil.isEmpty(delivery.getUserId())) {
             return new DataRet<>("ERROR", "参数错误");
         }
-        String userId = WxUtil.getOpenId(delivery.getWxCode());
-        delivery.setUserId(userId);
-        //判断该用户是否为第一次创建收货地址
-        Page<Delivery> page = deliveryMapper.findByWxCode(userId);
-        if (page.size() <= 0) {
-            Integer result = deliveryMapper.add(delivery);
-            if (result > 0) {
-                return new DataRet<>("新增成功");
-            }
+        //最新添加的地址为默认地址
+        delivery.setDefaultAddress(CommonEnum.DEFAULT_ADDRESS.getCode());
+        if (delivery.getUserId() == null) {
+            String userId = WxUtil.getOpenId(delivery.getWxCode());
+            delivery.setUserId(userId);
         }
+        //判断该用户是否为第一次创建收货地址
         Integer result = deliveryMapper.add(delivery);
-        if (result <= 0) {
+        if (result == 0) {
             return new DataRet<>("ERROR", "新增失败");
         }
-        Integer defaultResult = deliveryMapper.updateDefaultById(delivery.getId(), userId);
-        if (defaultResult <= 0) {
-            return new DataRet<>("ERROR", "修改默认地址失败");
-        }
+        deliveryMapper.updateDefaultById(delivery.getId(), delivery.getUserId());
         return new DataRet<>("新增成功");
     }
 
@@ -99,16 +99,13 @@ public class DeliveryServiceImpl implements DeliveryService {
     /**
      * 修改收货地址信息
      *
-     * @param delivery
-     * @return
+     * @param delivery Delivery
+     * @return DataRet
      */
     @Override
     public DataRet<String> update(Delivery delivery) {
         if (delivery.getId() == null) {
             return new DataRet<>("ERROR", "参数错误");
-        }
-        if (delivery == null) {
-            return new DataRet<>("ERROR", "查无此物");
         }
         Integer result = deliveryMapper.update(delivery);
         if (result <= 0) {
@@ -121,53 +118,63 @@ public class DeliveryServiceImpl implements DeliveryService {
     /**
      * 删除收货地址
      *
-     * @param id
-     * @return
+     * @param id Long
+     * @return DataRet
      */
     @Override
-    public DataRet<String> delete(Long id) {
+    public DataRet<String> deleteById(Long id) {
         //查询收货地址是否为默认地址
-        Delivery delivery = deliveryMapper.findDetailById(id);
+        Delivery delivery = deliveryMapper.findById(id);
         Integer result = deliveryMapper.deleteById(id);
-        if (result <= 0) {
+        if (result == 0) {
             return new DataRet<>("ERROR", "删除失败");
         }
-        if (CommonEnum.DEFAULT_ADDRESS.getCode().equals(delivery.getDefaultAddress())) {
-            Page<Delivery> page = deliveryMapper.findByWxCode(delivery.getUserId());
-            if (page.size() > 0) {
-                Integer updateResult = deliveryMapper.updateDefaultAddress(page.get(0).getId());
-                if (updateResult <= 0) {
-                    return new DataRet<>("ERROR", "设置默认地址失败");
-                }
-                return new DataRet<>("删除成功");
-            }
+        boolean defaultAddress = CommonEnum.DEFAULT_ADDRESS.getCode().equals(delivery.getDefaultAddress());
+        if (!defaultAddress) {
             return new DataRet<>("删除成功");
         }
-        return new DataRet<>("删除成功");
+        //删除默认地址，设置下一个默认地址
+        Page<Delivery> page = deliveryMapper.findByUserId(delivery.getUserId());
+        if (page.size() == 0) {
+            return new DataRet<>("删除成功");
+        }
+        Integer updateResult = deliveryMapper.updateDefaultAddress(page.get(0).getId());
+        if (updateResult > 0) {
+            return new DataRet<>("删除成功");
+        }
+        return new DataRet<>("ERROR", "设置默认地址失败");
     }
 
 
     /**
      * 设置默认地址
      *
-     * @param id
-     * @param wxCode
-     * @return
+     * @param id     Long
+     * @param wxCode String
+     * @return DataRet
      */
     @Override
-    public DataRet<String> defaultAddress(Long id, String wxCode) {
-        if (StringUtil.isEmpty(wxCode)) {
+    public DataRet<String> defaultAddress(Long id, String wxCode, Long userId) {
+        if (id == null) {
             return new DataRet<>("ERROR", "参数错误");
         }
-        String userId = WxUtil.getOpenId(wxCode);
-        Delivery delivery = deliveryMapper.findDetailById(id);
+        if (StringUtil.isEmpty(wxCode) && userId == null) {
+            return new DataRet<>("ERROR", "参数错误");
+        }
+        String dUserId;
+        if (userId == null) {
+            dUserId = WxUtil.getOpenId(wxCode);
+        } else {
+            dUserId = String.valueOf(userId);
+        }
+        Delivery delivery = deliveryMapper.findById(id);
         Integer result = deliveryMapper.updateDefaultAddress(id);
-        if (result <= 0) {
+        if (result == 0) {
             return new DataRet<>("ERROR", "设置默认地址失败");
         }
         if (CommonEnum.UN_DEFAULT_ADDRESS.getCode().equals(delivery.getDefaultAddress())) {
-            Integer defaultResult = deliveryMapper.updateDefaultById(id, userId);
-            if (defaultResult <= 0) {
+            result = deliveryMapper.updateDefaultById(id, dUserId);
+            if (result == 0) {
                 return new DataRet<>("ERROR", "修改默认地址失败");
             }
         }
@@ -178,16 +185,21 @@ public class DeliveryServiceImpl implements DeliveryService {
     /**
      * 获取默认地址
      *
-     * @param wxCode
-     * @return
+     * @param wxCode String
+     * @return DataRet
      */
     @Override
-    public DataRet<Delivery> getDefault(String wxCode) {
-        if (StringUtil.isEmpty(wxCode)) {
+    public DataRet<Delivery> getDefault(String wxCode, Long userId) {
+        if (StringUtil.isEmpty(wxCode) && userId == null) {
             return new DataRet<>("ERROR", "参数错误");
         }
-        String userId = WxUtil.getOpenId(wxCode);
-        Delivery delivery = deliveryMapper.getDefault(userId);
+        String dUserId;
+        if (userId == null) {
+            dUserId = WxUtil.getOpenId(wxCode);
+        } else {
+            dUserId = String.valueOf(userId);
+        }
+        Delivery delivery = deliveryMapper.getDefault(dUserId);
         if (delivery == null) {
             return new DataRet<>("ERROR", "查无结果");
         }

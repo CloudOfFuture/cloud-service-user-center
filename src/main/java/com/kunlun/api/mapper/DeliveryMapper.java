@@ -14,18 +14,11 @@ public interface DeliveryMapper {
 
     /**
      * 根据收获地址id查找收获地址
+     *
      * @param deliveryId
      * @return
      */
-    Delivery findDetailById(@Param("deliveryId") Long deliveryId);
-
-    /**
-     *用户收货地址分页
-     *
-     * @param userId
-     * @return
-     */
-    Page<Delivery> findByWxCode(String userId);
+    Delivery findById(@Param("deliveryId") Long deliveryId);
 
 
     /**
@@ -44,7 +37,7 @@ public interface DeliveryMapper {
      * @param userId
      * @return
      */
-    Integer updateDefaultById(@Param("id") Long id,@Param("userId") String userId);
+    Integer updateDefaultById(@Param("id") Long id, @Param("userId") String userId);
 
 
     /**
@@ -78,5 +71,13 @@ public interface DeliveryMapper {
      * @param userId
      * @return
      */
-    Delivery getDefault(@Param("useId") String userId);
+    Delivery getDefault(@Param("userId") String userId);
+
+    /**
+     * 根据 userId查询列表
+     *
+     * @param userId
+     * @return
+     */
+    Page<Delivery> findByUserId(@Param("userId") String userId);
 }

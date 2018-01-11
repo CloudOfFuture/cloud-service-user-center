@@ -15,22 +15,22 @@ public interface DeliveryService {
 
     /**
      * 根据收获地址id查找详情
+     *
      * @param deliveryId
      * @return
      */
-    DataRet<Delivery> findDetailById(Long deliveryId);
-
-
+    DataRet<Delivery> findById(Long deliveryId);
 
     /**
-     *用户收货地址分页
+     * 用户收货地址分页
      *
-     * @param wxCode
-     * @param pageNo
-     * @param pageSize
-     * @return
+     * @param wxCode   String 小程序用户id
+     * @param pageNo   Integer
+     * @param userId   Long  商户（卖家id）
+     * @param pageSize Integer
+     * @return PageResult
      */
-    PageResult findByWxCode(String wxCode, Integer pageNo, Integer pageSize);
+    PageResult findByUserId(String wxCode, Long userId, Integer pageNo, Integer pageSize);
 
 
     /**
@@ -57,23 +57,25 @@ public interface DeliveryService {
      * @param id
      * @return
      */
-    DataRet<String> delete(Long id);
+    DataRet<String> deleteById(Long id);
 
     /**
      * 设置默认地址
      *
      * @param id
      * @param wxCode
+     * @param userId
      * @return
      */
-    DataRet<String> defaultAddress(Long id, String wxCode);
+    DataRet<String> defaultAddress(Long id, String wxCode, Long userId);
 
 
     /**
      * 获取默认地址
      *
      * @param wxCode
+     * @param userId
      * @return
      */
-    DataRet<Delivery> getDefault(String wxCode);
+    DataRet<Delivery> getDefault(String wxCode, Long userId);
 }
