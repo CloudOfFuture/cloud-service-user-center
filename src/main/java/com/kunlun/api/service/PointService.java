@@ -18,10 +18,10 @@ public interface PointService {
      * 积分检查
      *
      * @param pointValue 使用积分
-     * @param openid     openid
+     * @param openId     openId
      * @return
      */
-    DataRet<String> checkPoint(Integer pointValue, String openid);
+    DataRet<String> checkPoint(Integer pointValue, String openId);
 
     /**
      * 操作用户积分
