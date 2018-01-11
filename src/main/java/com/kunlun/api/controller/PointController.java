@@ -5,6 +5,7 @@ import com.kunlun.entity.Point;
 import com.kunlun.entity.PointLog;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
+import com.kunlun.utils.WxUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +20,6 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("point")
 public class PointController {
-
-
-    private Logger LOGGER = Logger.getLogger("日志");
-
     @Autowired
     private PointService pointService;
 
@@ -33,24 +30,23 @@ public class PointController {
      * @param openid     openid
      * @return
      */
-    @GetMapping("/checkPoint")
+    @PostMapping("/checkPoint")
     public DataRet<String> checkPoint(@RequestParam(value = "pointValue") Integer pointValue,
                                       @RequestParam(value = "openid") String openid) {
-        LOGGER.info("积分检查");
         return pointService.checkPoint(pointValue, openid);
     }
 
     /**
      * 操作用户积分（增,减）
      *
-     * @param point
+     * @param operatePoint
      * @param userId
      * @return
      */
     @PostMapping("/updatePoint")
-    public DataRet<String> updatePoint(@RequestParam(value = "point") Integer point,
+    public DataRet<String> updatePoint(@RequestParam(value = "operatePoint") Integer operatePoint,
                                        @RequestParam(value = "userId") String userId) {
-        return pointService.updatePoint(point, userId);
+        return pointService.updatePoint(operatePoint, userId);
     }
 
     /**
@@ -60,24 +56,7 @@ public class PointController {
      * @return
      */
     @GetMapping("/findPointByUserId")
-    public DataRet<Point> findPointByUserId(@RequestParam(value = "userId") String userId) {
-        return pointService.findPointByUserId(userId);
+    public DataRet<Point> findByUserId(@RequestParam(value = "userId") String userId) {
+        return pointService.findByUserId(userId);
     }
-
-
-    /**
-     * 获取积分记录列表
-     *
-     * @param pageNo
-     * @param pageSize
-     * @param wxCode
-     * @return
-     */
-    @GetMapping("/findPointLog")
-    public PageResult findPointLog(@RequestParam(value = "pageNo") Integer pageNo,
-                                   @RequestParam(value = "pageSize") Integer pageSize,
-                                   @RequestParam(value = "wxCode") String wxCode) {
-        return pointService.findPointLog(pageNo, pageSize, wxCode);
-    }
-
 }

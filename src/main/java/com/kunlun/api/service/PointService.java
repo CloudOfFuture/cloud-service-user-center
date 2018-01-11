@@ -38,16 +38,5 @@ public interface PointService {
      * @param userId
      * @return
      */
-    DataRet<Point> findPointByUserId(String userId);
-
-
-    /**
-     * 获取积分记录
-     *
-     * @param pageNo
-     * @param pageSize
-     * @param wxCode
-     * @return
-     */
-    PageResult findPointLog(Integer pageNo, Integer pageSize, String wxCode);
+    DataRet<Point> findByUserId(String userId);
 }

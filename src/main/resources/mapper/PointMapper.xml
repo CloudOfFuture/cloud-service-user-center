@@ -3,25 +3,37 @@
         PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kunlun.api.mapper.PointMapper">
-    <!--微信根据open_id查询积分信息-->
-    <select id="findByOpenid" resultType="com.kunlun.entity.Point">
-        SELECT * FROM t_point WHERE user_id = #{openid}
-    </select>
 
-    <!--操作用户积分-->
-    <update id="updatePoint">
-        UPDATE t_point SET point = point + #{point}
+    <insert id="add" parameterType="com.kunlun.entity.Point">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_point(user_id,point,level,level_name,create_date)
+        VALUES (#{userId},#{point},#{level},#{levelName},NOW())
+    </insert>
+
+    <sql id="detail">
+         SELECT
+         id,
+         user_id,
+         point,
+         level,
+         level_name,
+         create_date
+         FROM t_point
+    </sql>
+    <!--用户id查询积分信息-->
+    <select id="findByUserId" resultType="com.kunlun.entity.Point">
+        <include refid="detail"/>
         WHERE user_id = #{userId}
-    </update>
-
-
-    <!--获取积分记录-->
-    <select id="findByUserId" resultType="com.kunlun.entity.PointLog">
-        SELECT id,
-        action,
-        current_point,
-        operate_point
-        FROM t_point_log
-        WHERE user_id=#{userId}
     </select>
+    <!--操作用户积分-->
+    <update id="update" parameterType="com.kunlun.entity.Point">
+        UPDATE t_point
+        SET point = #{point},
+        level=#{level},
+        <if test="levelName!=null">level_name=#{levelName},</if>
+        update_date=NOW()
+        WHERE id = #{id}
+    </update>
 </mapper>
