@@ -123,6 +123,8 @@ public class UserServiceImpl implements UserService {
             result = userMapper.updateSellerInfo(user);
         } else {
             //管理员可以修改所有信息
+            user.setAge(CommonUtil.getAgeByIdCardNo(user.getCertificateId()));
+            user.setSex(CommonUtil.getGenderByIdCardNo(user.getCertificateId()));
             result = userMapper.updateAdminInfo(user);
         }
         if (result > 0) {
@@ -142,6 +144,8 @@ public class UserServiceImpl implements UserService {
         if (user.getId() == null) {
             return new DataRet<>("param_error", "id不能为空");
         }
+        user.setAge(CommonUtil.getAgeByIdCardNo(user.getCertificateId()));
+        user.setSex(CommonUtil.getGenderByIdCardNo(user.getCertificateId()));
         int result = userMapper.updateSellerAuthInfo(user);
         saveIdPhotoImage(user.getId(), user.getIdPhotoFrontUrl(), user.getIdPhotoBgUrl());
         if (result > 0) {

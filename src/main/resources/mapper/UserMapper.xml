@@ -139,14 +139,9 @@
         born_date,
         sex,
         age,
-        email,
-        address,
         password,
-        head_picture,
-        nick_name,
         certification,
         certificate_id,
-        city,
         status,
         create_date,
         user_type,
@@ -158,14 +153,9 @@
         #{bornDate},
         #{sex},
         #{age},
-        #{email},
-        #{address},
         #{password},
-        #{headPicture},
-        #{nickName},
         #{certification},
         #{certificateId},
-        #{city},
         'NORMAL',
         NOW(),
         'SELLER',
@@ -174,14 +164,12 @@
         )
     </insert>
 
-
     <!--修改商户个人信息-->
     <update id="updateSellerInfo" parameterType="com.kunlun.entity.User">
         UPDATE t_user SET
         <if test="headPicture!=null and headPicture!=''">head_picture=#{headPicture},</if>
         <if test="nickName!=null and nickName!=''">nick_name=#{nickName},</if>
         <if test="city!=null and city!=''">city=#{city},</if>
-        <if test="mobile!=null and mobile!=''">mobile=#{mobile},</if>
         <if test="email!=null and email!=''">email=#{email},</if>
         <if test="address!=null and address!=''">address=#{address},</if>
         update_date=now()
@@ -197,20 +185,16 @@
         <if test="sex!=null and sex!=''">sex=#{sex},</if>
         <if test="age!=null and age!=''">age=#{age},</if>
         <if test="certificateId!=null and certificateId!=''">certificate_id=#{certificateId},</if>
-        <if test="mobile!=null and mobile!=''">mobile=#{mobile},</if>
         <if test="address!=null and address!=''">address=#{address},</if>
         <if test="city!=null and city!=''">city=#{city},</if>
         <if test="email!=null and email!=''">email=#{email},</if>
         <if test="bornDate!=null">born_date=#{bornDate},</if>
-        <if test="lastLoginDate!=null">last_login_date=#{lastLoginDate},</if>
-        <if test="loginIp!=null and loginIp!=''">login_ip=#{loginIp},</if>
         <if test="idPhotoFrontUrl!=null and idPhotoFrontUrl!=''">id_photo_front_url=#{idPhotoFrontUrl},</if>
         <if test="idPhotoBgUrl!=null and idPhotoBgUrl!=''">id_photo_bg_url=#{idPhotoBgUrl},</if>
         certification='NOT_AUTH',
         update_date=NOW()
         WHERE id=#{id}
     </update>
-
 
     <update id="updateAdminInfo" parameterType="com.kunlun.entity.User">
         UPDATE t_user SET
@@ -220,19 +204,16 @@
         <if test="sex!=null and sex!=''">sex=#{sex},</if>
         <if test="age!=null and age!=''">age=#{age},</if>
         <if test="certificateId!=null and certificateId!=''">certificate_id=#{certificateId},</if>
-        <if test="mobile!=null and mobile!=''">mobile=#{mobile},</if>
         <if test="address!=null and address!=''">address=#{address},</if>
         <if test="city!=null and city!=''">city=#{city},</if>
         <if test="email!=null and email!=''">email=#{email},</if>
         <if test="bornDate!=null">born_date=#{bornDate},</if>
         <if test="certification!=null and certification!=''">certification=#{certification},</if>
         <if test="status!=null and status!=''">status=#{status},</if>
-        <if test="lastLoginDate!=null">last_login_date=#{lastLoginDate},</if>
         <if test="userType!=null and userType!=''">user_type=#{userType},</if>
         update_date=NOW()
         WHERE id=#{id}
     </update>
-
 
     <update id="updatePassword">
         UPDATE t_user
