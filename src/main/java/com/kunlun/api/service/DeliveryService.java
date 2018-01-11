@@ -16,10 +16,10 @@ public interface DeliveryService {
     /**
      * 根据收获地址id查找详情
      *
-     * @param deliveryId
+     * @param id
      * @return
      */
-    DataRet<Delivery> findById(Long deliveryId);
+    DataRet<Delivery> findById(Long id);
 
     /**
      * 用户收货地址分页

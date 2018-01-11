@@ -15,10 +15,10 @@ public interface DeliveryMapper {
     /**
      * 根据收获地址id查找收获地址
      *
-     * @param deliveryId
+     * @param id
      * @return
      */
-    Delivery findById(@Param("deliveryId") Long deliveryId);
+    Delivery findById(@Param("id") Long id);
 
 
     /**

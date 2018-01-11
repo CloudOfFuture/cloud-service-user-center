@@ -9,8 +9,8 @@
         recipients,
         phone,
         province,
-        status,
         city,
+        status,
         area,
         address,
         post_code,
@@ -22,7 +22,7 @@
     <!--根据id查找收获地址详情-->
     <select id="findById" resultType="com.kunlun.entity.Delivery">
         <include refid="baseDetail"/>
-        WHERE id=#{deliveryId} AND status='NORMAL'
+        WHERE id=#{id} AND status='NORMAL'
     </select>
 
 
