@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.kunlun.api.client.FileClient;
 import com.kunlun.api.client.SysRoleClient;
 import com.kunlun.api.mapper.UserMapper;
+import com.kunlun.constant.Constant;
 import com.kunlun.entity.MallImg;
 import com.kunlun.entity.SysRole;
 import com.kunlun.entity.User;
@@ -40,10 +41,10 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password)) {
             return new DataRet("param_error", "参数错误");
         }
-        if (mobile.length() < 11) {
+        if (mobile.length() < Constant.MOBILE_LENGTH) {
             return new DataRet("login_error", "账号有误");
         }
-        if (password.length() < 6) {
+        if (password.length() < Constant.PASSWORD_MIN_LENGTH) {
             return new DataRet("login_error", "密码不能小于六位");
         }
         String encryptPassword = EncryptUtil.encryptMD5(password);
@@ -56,8 +57,6 @@ public class UserServiceImpl implements UserService {
         //将用户手机号码作为加密字符串回传
         String tokenStr = EncryptUtil.aesEncrypt(user.getMobile(), "ScorpionMall8888");
         user.setToken(tokenStr);
-        //设置用户登录有效期为30分钟
-//        redisTemplate.opsForValue().set("Login:" + user.getMobile(), user.toString(), 30, TimeUnit.MINUTES);
         return new DataRet<>(user);
     }
 
@@ -71,11 +70,11 @@ public class UserServiceImpl implements UserService {
             return new DataRet("param_error", "参数有误");
         }
 
-        if (user.getMobile().length() < 11) {
+        if (user.getMobile().length() < Constant.MOBILE_LENGTH) {
             return new DataRet("mobile_error", "手机号码有误");
         }
 
-        if (user.getPassword().length() < 6) {
+        if (user.getPassword().length() < Constant.PASSWORD_MIN_LENGTH) {
             return new DataRet("password_error", "密码长度不能小于六位");
         }
 
@@ -132,6 +131,12 @@ public class UserServiceImpl implements UserService {
         return new DataRet<>("update_error", "修改失败");
     }
 
+    /**
+     * 修改商户个人资料（需要后台系统认证的信息）
+     *
+     * @param user User
+     * @return DataRet
+     */
     @Override
     public DataRet updateUserAuthInfo(User user) {
         if (user.getId() == null) {
